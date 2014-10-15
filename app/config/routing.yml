@@ -1,0 +1,6 @@
+opium:
+    resource: "@OpiumBundle/Resources/config/routing.yml"
+    prefix:   /v1/{_format}
+    requirements:
+        _format: json|xml
+
