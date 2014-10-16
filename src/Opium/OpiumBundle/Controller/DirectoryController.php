@@ -27,6 +27,7 @@ class DirectoryController extends FOSRestController
         $finder
             ->in($path)
             ->depth(0)
+            ->sortByType()
         ;
 
         $files = [];
