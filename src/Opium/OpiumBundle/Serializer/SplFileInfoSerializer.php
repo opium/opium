@@ -9,6 +9,27 @@ use Symfony\Component\Finder\SplFileInfo;
 class SplFileInfoSerializer
 {
     /**
+     * photoDirectoryLength
+     *
+     * @var int
+     * @access private
+     */
+    private $photoDirectoryLength;
+
+    /**
+     * __construct
+     *
+     * @param string $photoDirectory
+     * @access public
+     * @return void
+     */
+    public function __construct($photoDirectory, $prefix = '')
+    {
+        $this->photoDirectoryLength = strlen($photoDirectory);
+        $this->prefix = $prefix;
+    }
+
+    /**
      * serializeSplFileInfoToJson
      *
      * @param VisitorInterface $visitor
@@ -20,17 +41,31 @@ class SplFileInfoSerializer
      */
     public function serializeSplFileInfoToJson( VisitorInterface $visitor, SplFileInfo $file, array $type, Context $context)
     {
+        $publicPath = $this->prefix . substr($file->getPathname(), $this->photoDirectoryLength);
         $info = [
-            'path' => $file->getRelativePathname(),
+            'name' => $file->getRelativePathname(),
+            'path' => $publicPath,
             'type' => $file->isFile() ? 'file' : 'directory',
         ];
         if ($file->isFile()) {
-            $imageSize = getimagesize($file->getRealPath());
-            $info['mime'] = $imageSize['mime'];
-            $info['width'] = $imageSize[0];
-            $info['height'] = $imageSize[1];
+            $imageSize = @getimagesize($file->getRealPath());
+            if ($imageSize) {
+                $info['mime'] = $imageSize['mime'];
+                $info['width'] = $imageSize[0];
+                $info['height'] = $imageSize[1];
+                $info['thumbnails'] = $this->getThumbnails($publicPath);
+            }
         }
 
         return $info;
+    }
+
+    private function getThumbnails($path)
+    {
+        $pathinfo = pathinfo($path);
+
+        return [
+            'square-200x200' => $pathinfo['dirname'] . '/' . $pathinfo['filename'] . '/thumbs/200-200.' . $pathinfo['extension']
+        ];
     }
 }

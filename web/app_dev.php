@@ -11,7 +11,11 @@ use Symfony\Component\Debug\Debug;
 // Feel free to remove this, extend it, or make something more sophisticated.
 if (isset($_SERVER['HTTP_CLIENT_IP'])
     || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
-    || !(in_array(@$_SERVER['REMOTE_ADDR'], array('2001:41d0:fc66:6f00:29cd:bbc4:9924:33df', '85.171.69.124', '127.0.0.1', 'fe80::1', '::1')) || php_sapi_name() === 'cli-server')
+    || !(
+        in_array(@$_SERVER['REMOTE_ADDR'], array('85.171.69.124', '127.0.0.1', 'fe80::1', '::1'))
+        || in_array(substr(@$_SERVER['REMOTE_ADDR'], 0, 20), array('2001:41d0:fc66:6f00:'))
+        || php_sapi_name() === 'cli-server'
+    )
 ) {
     header('HTTP/1.0 403 Forbidden');
     exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');

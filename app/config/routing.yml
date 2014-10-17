@@ -1,6 +1,9 @@
-opium:
-    resource: "@OpiumBundle/Resources/config/routing.yml"
+opium_api:
+    resource: "@OpiumBundle/Resources/config/routing/api.yml"
     prefix:   /v1/{_format}
     requirements:
         _format: json|xml
 
+opium_image:
+    resource: "@OpiumBundle/Resources/config/routing/image.yml"
+    prefix:   /

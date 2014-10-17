@@ -21,3 +21,4 @@ parameters:
     use_assetic_controller: true
 
     photos_directory: "%kernel.root_dir%/../photos/"
+    thumbs_directory: "%kernel.root_dir%/../.thumbs/"

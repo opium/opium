@@ -3,5 +3,5 @@ opium_directory:
     defaults: 
         _controller: OpiumBundle:Directory:index
     requirements:
-        path: "|[a-zA-Z0-9\-\/\s]+"
+        path: "|.+"
         _method: GET
