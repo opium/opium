@@ -6,6 +6,8 @@
 
     <services>
         <service id="opium.serializer.file" class="Opium\OpiumBundle\Serializer\SplFileInfoSerializer">
+            <argument>%photos_directory%</argument>
+            <argument>/app_dev.php</argument>
             <tag name="jms_serializer.handler" type="Symfony\Component\Finder\SplFileInfo" direction="serialization" format="json" />
         </service>
     </services>
