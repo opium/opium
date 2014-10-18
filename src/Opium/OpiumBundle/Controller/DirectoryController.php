@@ -21,11 +21,19 @@ class DirectoryController extends FOSRestController
         $fileList = [];
         $rootDir = $this->container->getParameter('photos_directory');
 
-        $path = $rootDir . '/' . $path;
+        $absolutePath = $rootDir . $path;
+        $parentPath = substr($path, 0, strrpos($path, '/', -2));
+        if ($parentPath !== false) {
+            if ($parentPath) {
+                $parentPath = '/' . $parentPath . '/';
+            } else {
+                $parentPath = '/';
+            }
+        }
 
         $finder = new Finder();
         $finder
-            ->in($path)
+            ->in($absolutePath)
             ->depth(0)
             ->sortByType()
         ;
@@ -35,6 +43,9 @@ class DirectoryController extends FOSRestController
             $files[] = $file;
         }
 
-        return ['files' => iterator_to_array($finder, false)];
+        return [
+            'parentDirectory' => $parentPath,
+            'files' => iterator_to_array($finder, false)
+        ];
     }
 }

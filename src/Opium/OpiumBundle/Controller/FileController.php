@@ -32,7 +32,13 @@ class FileController extends Controller
             return new BinaryFileResponse($writePath);
         }
         $filepath = $this->container->getParameter('photos_directory') . $path . '.' . $extension;
-        $crop = new \stojg\crop\CropEntropy($filepath);
+        $imagick = new \Imagick($filepath);
+        if (!in_array($imagick->getImageMimeType(), $this->container->getParameter('allowed_mime_types'))) {
+            throw $this->createNotFoundException('Wrong file mime type');
+        }
+
+        $crop = new \stojg\crop\CropEntropy();
+        $crop->setImage($imagick);
         $imagick = $crop->resizeAndCrop($width, $height);
         $imagick->writeImage($writePath);
 

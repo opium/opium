@@ -5,6 +5,8 @@ namespace Opium\OpiumBundle\Serializer;
 use JMS\Serializer\VisitorInterface;
 use JMS\Serializer\Context;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SplFileInfoSerializer
 {
@@ -17,16 +19,44 @@ class SplFileInfoSerializer
     private $photoDirectoryLength;
 
     /**
+     * router
+     *
+     * @var RouterInterface
+     * @access private
+     */
+    private $router;
+
+    /**
+     * requestStack
+     *
+     * @var RequestStack
+     * @access private
+     */
+    private $requestStack;
+
+    /**
+     * allowedMimeTypes
+     *
+     * @var array
+     * @access private
+     */
+    private $allowedMimeTypes;
+
+    /**
      * __construct
      *
      * @param string $photoDirectory
+     * @param RouterInterface $router
+     * @param RequestStack $requestStack
+     * @param array $allowedMimeTypes
      * @access public
-     * @return void
      */
-    public function __construct($photoDirectory, $prefix = '')
+    public function __construct($photoDirectory, RouterInterface $router, RequestStack $requestStack, $allowedMimeTypes)
     {
         $this->photoDirectoryLength = strlen($photoDirectory);
-        $this->prefix = $prefix;
+        $this->router = $router;
+        $this->requestStack = $requestStack;
+        $this->allowedMimeTypes = $allowedMimeTypes;
     }
 
     /**
@@ -41,31 +71,68 @@ class SplFileInfoSerializer
      */
     public function serializeSplFileInfoToJson( VisitorInterface $visitor, SplFileInfo $file, array $type, Context $context)
     {
-        $publicPath = $this->prefix . substr($file->getPathname(), $this->photoDirectoryLength);
+        $path = substr($file->getPathname(), $this->photoDirectoryLength)
+            . ($file->isDir() ? '/' : '');
+        $format = $this->requestStack->getMasterRequest()->attributes->get('_format');
+        //$apiPath = $this->router
+        //    ->generate(
+        //        'opium_directory',
+        //        [
+        //            'path' =>  $path,
+        //            '_format' => $format
+        //        ]
+        //    );
+
         $info = [
             'name' => $file->getRelativePathname(),
-            'path' => $publicPath,
+            'pathname' => $path,
+            //'api' => [ 'path' => $apiPath ],
             'type' => $file->isFile() ? 'file' : 'directory',
         ];
         if ($file->isFile()) {
             $imageSize = @getimagesize($file->getRealPath());
-            if ($imageSize) {
-                $info['mime'] = $imageSize['mime'];
-                $info['width'] = $imageSize[0];
-                $info['height'] = $imageSize[1];
-                $info['thumbnails'] = $this->getThumbnails($publicPath);
+            if ($imageSize && in_array($imageSize['mime'], $this->allowedMimeTypes)) {
+                $imgPath = substr($file->getPathname(), $this->photoDirectoryLength);
+                $info['image'] = [
+                    'mime' => $imageSize['mime'],
+                    'width' => $imageSize[0],
+                    'height' => $imageSize[1],
+                    'original' => $this->router->generate('basefile', ['path' => $imgPath]),
+                    'thumbnails' => $this->getThumbnails($imgPath),
+                ];
             }
         }
 
         return $info;
     }
 
+    /**
+     * getThumbnails
+     *
+     * @param mixed $path
+     * @access private
+     * @return array
+     */
     private function getThumbnails($path)
     {
+        if (substr($path, 0, 1) == '/') {
+            $path = substr($path, 1);
+        }
+
         $pathinfo = pathinfo($path);
+        $square200x200 = $this->router
+            ->generate(
+                'image_crop',
+                [
+                    'path' => $pathinfo['dirname'] . '/' . $pathinfo['filename'],
+                    'width' => 200,
+                    'height' => 200,
+                    'extension' => $pathinfo['extension'],
+                ]
+            );
 
         return [
-            'square-200x200' => $pathinfo['dirname'] . '/' . $pathinfo['filename'] . '/thumbs/200-200.' . $pathinfo['extension']
+            'square-200x200' => $square200x200,
         ];
     }
 }

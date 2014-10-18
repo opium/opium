@@ -1,5 +1,5 @@
 opium_directory:
-    path:  "/{path}"
+    path:  "/{path}/"
     defaults: 
         _controller: OpiumBundle:Directory:index
     requirements:
