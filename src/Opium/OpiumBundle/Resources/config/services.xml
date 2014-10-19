@@ -5,12 +5,15 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="opium.serializer.file" class="Opium\OpiumBundle\Serializer\SplFileInfoSerializer">
+        <service id="opium.transformer.file" class="Opium\OpiumBundle\Transformer\FileTransformer" public="false">
             <argument>%photos_directory%</argument>
             <argument type="service" id="router"></argument>
-            <argument type="service" id="request_stack"></argument>
             <argument>%allowed_mime_types%</argument>
-            <tag name="jms_serializer.handler" type="Symfony\Component\Finder\SplFileInfo" direction="serialization" format="json" />
+        </service>
+
+        <service id="opium.finder.photo" class="Opium\OpiumBundle\Finder\PhotoFinder">
+            <argument>%photos_directory%</argument>
+            <argument type="service" id="opium.transformer.file"></argument>
         </service>
     </services>
 </container>

@@ -2,7 +2,13 @@
 
 namespace Opium\OpiumBundle\Entity;
 
-class Directory
+class Directory extends File
 {
-    private $path;
+    /**
+     * {@inheritdoc}
+     */
+    public function getType()
+    {
+        return 'directory';
+    }
 }
