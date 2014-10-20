@@ -19,6 +19,14 @@ class FileTransformer
     private $photoDir;
 
     /**
+     * thumbsDir
+     *
+     * @var string
+     * @access private
+     */
+    private $thumbsDir;
+
+    /**
      * allowedMimeTypes
      *
      * @var array
@@ -40,11 +48,12 @@ class FileTransformer
      * @param string $photoDir
      * @access public
      */
-    public function __construct($photoDir, RouterInterface $router, array $allowedMimeTypes)
+    public function __construct($photoDir, RouterInterface $router, array $allowedMimeTypes, $thumbsDir)
     {
         $this->photoDir = $photoDir;
         $this->router = $router;
         $this->allowedMimeTypes = $allowedMimeTypes;
+        $this->thumbsDir = $thumbsDir;
     }
 
     /**
@@ -62,28 +71,7 @@ class FileTransformer
         $dir->setPathname($path)
             ->setName($file->getRelativePathname());
 
-        $finder = new \Symfony\Component\Finder\Finder();
-
-        $files = $finder->files()
-            ->in($file->getPathname() . '/')
-            ->depth(0)
-            ->filter(function (\SplFileInfo $tmpFile) {
-                if (!in_array(strtolower($tmpFile->getExtension()), ['png', 'jpg', 'jpeg'])) {
-                    return false;
-                }
-                $photo = $this->transformToFile($tmpFile);
-                if (!$photo->getImage()) {
-                    return false;
-                }
-            })
-            //->sortByName()
-            ;
-
-        // get first
-        $thumbnailFile = null;
-        foreach ($files as $thumbnailFile) {
-            break;
-        }
+        $thumbnailFile = $this->getDirectoryThumbnail($file, $dir);
 
         if ($thumbnailFile) {
             $dir->setThumbnails($this->transformToFile($thumbnailFile)->getThumbnails());
@@ -102,7 +90,7 @@ class FileTransformer
     public function transformToFile(SplFileInfo $file)
     {
         $photo = new Photo();
-        $path = substr($file->getPathname(), strlen($this->photoDir)) . '/';
+        $path = substr($file->getPathname(), strlen($this->photoDir));
         $photo->setPathname($path)
             ->setName($file->getRelativePathname());
 
@@ -151,5 +139,46 @@ class FileTransformer
         return [
             'square-200x200' => $square200x200,
         ];
+    }
+
+    /**
+     * getDirectoryThumbnail
+     *
+     * @param Directory $dir
+     * @param SplFileInfo $file
+     * @access private
+     * @return string
+     */
+    private function getDirectoryThumbnail(SplFileInfo $file, Directory $dir)
+    {
+
+        $finder = new \Symfony\Component\Finder\Finder();
+        $files = $finder->files()
+            ->in($file->getPathname() . '/')
+            ->depth(0)
+            ->filter(function (\SplFileInfo $tmpFile) {
+                if (!in_array(strtolower($tmpFile->getExtension()), ['png', 'jpg', 'jpeg'])) {
+                    return false;
+                }
+                $photo = $this->transformToFile($tmpFile);
+                if (!$photo->getImage()) {
+                    return false;
+                }
+            })
+            //->sortByName()
+            ;
+
+        $configFile = $this->thumbsDir . $dir->getName() . '/config.yml';
+        if (file_exists($configFile)) {
+            $yaml = new \Symfony\Component\Yaml\Parser;
+            $config = $yaml->parse(file_get_contents($configFile));
+            $files->name($config['photo']);
+        }
+
+        // get first
+        $thumbnailFile = null;
+        foreach ($files as $thumbnailFile) {
+            return $thumbnailFile;
+        }
     }
 }
