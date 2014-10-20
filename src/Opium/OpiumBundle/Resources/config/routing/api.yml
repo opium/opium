@@ -5,3 +5,11 @@ opium_directory:
     requirements:
         path: "|.+"
         _method: GET
+
+opium_directory_update:
+    path:  "/{path}/"
+    defaults: 
+        _controller: OpiumBundle:Directory:update
+    requirements:
+        path: "|.+"
+        _method: POST

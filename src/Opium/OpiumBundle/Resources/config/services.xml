@@ -9,6 +9,7 @@
             <argument>%photos_directory%</argument>
             <argument type="service" id="router"></argument>
             <argument>%allowed_mime_types%</argument>
+            <argument>%thumbs_directory%</argument>
         </service>
 
         <service id="opium.finder.photo" class="Opium\OpiumBundle\Finder\PhotoFinder">
