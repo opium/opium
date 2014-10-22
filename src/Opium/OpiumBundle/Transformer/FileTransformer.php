@@ -125,20 +125,27 @@ class FileTransformer
         }
 
         $pathinfo = pathinfo($path);
-        $square200x200 = $this->router
-            ->generate(
-                'image_crop',
-                [
-                    'path' => $pathinfo['dirname'] . '/' . $pathinfo['filename'],
-                    'width' => 200,
-                    'height' => 200,
-                    'extension' => $pathinfo['extension'],
-                ]
-            );
-
-        return [
-            'square-200x200' => $square200x200,
+        $sizes = [
+            'square-200x200' => ['w' => 200, 'h' => 200],
+            'banner-1170x400' => ['w' => 1170, 'h' => 400],
         ];
+
+        $thumbs = [];
+        foreach ($sizes as $name => $size) {
+            $thumbs[$name] = $this->router
+                ->generate(
+                    'image_crop',
+                    [
+                        'path' => $pathinfo['dirname'] . '/' . $pathinfo['filename'],
+                        'width' => $size['w'],
+                        'height' => $size['h'],
+                        'extension' => $pathinfo['extension'],
+                    ]
+                );
+
+        }
+
+        return $thumbs;
     }
 
     /**
