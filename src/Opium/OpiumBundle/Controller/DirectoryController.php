@@ -26,9 +26,7 @@ class DirectoryController extends FOSRestController
 
         return [
             'parentDirectory' => $this->getParentPath($path),
-            'current' => [
-                'path' => $path,
-            ],
+            'current' => $this->get('opium.finder.photo')->get($path),
             'files' => $files,
         ];
     }
@@ -46,7 +44,7 @@ class DirectoryController extends FOSRestController
     public function photoAction($path, $photo)
     {
         $file = $this->get('opium.finder.photo')
-            ->get($path, $photo);
+            ->get($path . '/', $photo);
 
         return [
             'parentDirectory' => $this->getParentPath($path . '/' . $photo),

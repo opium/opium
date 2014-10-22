@@ -3,6 +3,7 @@
 namespace Opium\OpiumBundle\Finder;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Opium\OpiumBundle\Transformer\FileTransformer;
 
 class PhotoFinder
@@ -69,23 +70,21 @@ class PhotoFinder
     /**
      * get
      *
-     * @param mixed $path
-     * @param mixed $photo
+     * @param string $path
+     * @param string $filename
      * @access public
      * @return void
      */
-    public function get($path, $photo)
+    public function get($path, $filename = null)
     {
-        $absolutePath = $this->photoDir . $path;
+        $relativePathname = $path . $filename;
+        $absolutePath = $this->photoDir . $relativePathname;
 
-        $finder = new Finder();
-        $finder
-            ->in($absolutePath)
-            ->depth(0)
-            ->name($photo)
-        ;
+        $file = new SplFileInfo($absolutePath, $path, $relativePathname);
 
-        foreach ($finder as $file) {
+        if ($file->isDir()) {
+            return $this->fileTransformer->transformToDirectory($file);
+        } elseif ($file->isFile()) {
             return $this->fileTransformer->transformToFile($file);
         }
     }
