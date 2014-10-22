@@ -12,6 +12,7 @@ class FileController extends Controller
     public function baseFileAction($path)
     {
         $fullPath = $this->container->getParameter('photos_directory') . $path;
+
         return new BinaryFileResponse($fullPath);
     }
 
