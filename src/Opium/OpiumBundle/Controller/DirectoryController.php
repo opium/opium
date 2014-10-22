@@ -24,21 +24,33 @@ class DirectoryController extends FOSRestController
         $files = $this->get('opium.finder.photo')
             ->find($path);
 
-        $parentPath = substr($path, 0, strrpos($path, '/', -2));
-        if ($parentPath !== false) {
-            if ($parentPath) {
-                $parentPath = '/' . $parentPath . '/';
-            } else {
-                $parentPath = '/';
-            }
-        }
-
         return [
-            'parentDirectory' => $parentPath,
+            'parentDirectory' => $this->getParentPath($path),
             'current' => [
                 'path' => $path,
             ],
             'files' => $files,
+        ];
+    }
+
+    /**
+     * photoAction
+     *
+     * @param mixed $file
+     * @param mixed $photo
+     * @access public
+     * @return Response
+     *
+     * @Rest\View()
+     */
+    public function photoAction($path, $photo)
+    {
+        $file = $this->get('opium.finder.photo')
+            ->get($path, $photo);
+
+        return [
+            'parentDirectory' => $this->getParentPath($path . '/' . $photo),
+            'photo' => $file,
         ];
     }
 
@@ -81,5 +93,19 @@ class DirectoryController extends FOSRestController
         }
 
         return $path;
+    }
+
+    private function getParentPath($path)
+    {
+        $parentPath = substr($path, 0, strrpos($path, '/', -2));
+        if ($parentPath !== false) {
+            if ($parentPath) {
+                $parentPath = '/' . $parentPath . '/';
+            } else {
+                $parentPath = '/';
+            }
+        }
+
+        return $parentPath;
     }
 }

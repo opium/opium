@@ -65,4 +65,28 @@ class PhotoFinder
 
         return $files;
     }
+
+    /**
+     * get
+     *
+     * @param mixed $path
+     * @param mixed $photo
+     * @access public
+     * @return void
+     */
+    public function get($path, $photo)
+    {
+        $absolutePath = $this->photoDir . $path;
+
+        $finder = new Finder();
+        $finder
+            ->in($absolutePath)
+            ->depth(0)
+            ->name($photo)
+        ;
+
+        foreach ($finder as $file) {
+            return $this->fileTransformer->transformToFile($file);
+        }
+    }
 }
