@@ -1,8 +1,8 @@
 {
-    "name": "symfony/framework-standard-edition",
-    "license": "MIT",
+    "name": "opium/opium",
+    "license": "GPL-V3",
     "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
+    "description": "Open source photo gallery",
     "autoload": {
         "psr-0": { "": "src/", "SymfonyStandard": "app/" }
     },
