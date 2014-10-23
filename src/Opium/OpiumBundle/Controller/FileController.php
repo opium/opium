@@ -40,7 +40,7 @@ class FileController extends Controller
 
         $crop = new \stojg\crop\CropEntropy();
         $crop->setImage($imagick);
-        $imagick = $crop->resizeAndCrop($width, $height);
+        $imagick = $crop->resizeAndCrop($width ?: 0, $height ?: 0);
         $imagick->writeImage($writePath);
 
         return new ImagickResponse($imagick, getimagesize($filepath)['mime']);

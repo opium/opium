@@ -1,0 +1,23 @@
+.thumbnails {
+    display: flex;
+    flex-flow: row wrap;
+    font-size: 0;
+}
+
+figure {
+    margin: 0;
+}
+
+.thumbnails figure {
+    /*min-width: 201px;*/
+}
+
+.thumbnails figure.diminish {
+    min-width: 0;
+    flex: 0; 
+}
+
+.thumbnails figure img {
+    width: 100%;
+    height: auto;
+}

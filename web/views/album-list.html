@@ -7,40 +7,43 @@
         {{ folder.current.name }}
     </h1>
 
-    <div class="row">
-        <div class="col-md-2" ng-if="folder.parentDirectory">
-            <article>
-                <a href="#{{ folder.parentDirectory }}" class="thumbnail">
-                    <i class="el-icon-chevron-left"></i>
-                    Parent
-                </a>
-            </article>
-        </div>
-        <div class="col-md-2" ng-repeat="album in folder.files">
-            <article>
-                <a href="" ng-click="setPhoto(album.name)" ng-if="album.type == 'file'">
-                    <i class="el-icon-screen"></i>
-                    Set as main photo
-                </a>
+    <div ng-if="folder.parentDirectory">
+        <a href="#{{ folder.parentDirectory }}" class="thumbnail">
+            <i class="el-icon-chevron-left"></i>
+            Parent
+        </a>
+    </div>
 
-                <a ng-if="album.type == 'file'"
-                    href="{{ album.image.original }}"
-                    class="thumbnail popup-image"
-                    title="{{ album.name }}"
-                    data-set-main-url="#{{ folder.current.path }}"
-                    data-set-main-params="#{{ album.pathname }}"
-                >
-                    <img ng-src="{{ album.thumbnails['square-200x200'] }}" width="200" height="200" />
-                    {{ album.name }}
-                </a>
+    <div class="thumbnails">
+        <figure ng-repeat="album in folder.files">
+        <!--
+            <a href="" ng-click="setPhoto(album.name)" ng-if="album.type == 'file'">
+                <i class="el-icon-screen"></i>
+                Set as main photo
+            </a>
+            -->
 
-                <a href="#{{ album.pathname }}" ng-if="album.type != 'file'" class="thumbnail">
-                    <i class="el-icon-folder" ng-if="!album.thumbnails"></i>
-                    <img ng-src="{{ album.thumbnails['square-200x200'] }}" ng-if="album.thumbnails"}}" width="200" height="200" />
-                    {{ album.name }}
-                </a>
-            </article>
-        </div>
+        <!--
+            <a ng-if="album.type == 'file'"
+                href="{{ album.image.original }}"
+                class="thumbnail popup-image"
+                title="{{ album.name }}"
+                data-set-main-url="#{{ folder.current.path }}"
+                data-set-main-params="#{{ album.pathname }}"
+            >
+            -->
+                <img ng-src="{{ album.thumbnails['max-height-400'] }}" />
+            <!--
+                {{ album.name }}
+            </a>
+                -->
+
+            <a href="#{{ album.pathname }}" ng-if="album.type != 'file'" class="thumbnail">
+                <i class="el-icon-folder" ng-if="!album.thumbnails"></i>
+                <img ng-src="{{ album.thumbnails['square-200x200'] }}" ng-if="album.thumbnails"}}" width="200" height="200" />
+                {{ album.name }}
+            </a>
+        </figure>
     </div>
 
     <p>

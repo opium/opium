@@ -4,6 +4,8 @@ image_crop:
         _controller: OpiumBundle:File:cropImage
     requirements:
         path: .+
+        width: "[0-9]*"
+        height: "[0-9]*"
         _method: GET
 
 basefile:

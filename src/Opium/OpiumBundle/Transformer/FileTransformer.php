@@ -127,6 +127,7 @@ class FileTransformer
         $pathinfo = pathinfo($path);
         $sizes = [
             'square-200x200' => ['w' => 200, 'h' => 200],
+            'max-height-400' => ['h' => 400],
             'banner-1170x400' => ['w' => 1170, 'h' => 400],
         ];
 
@@ -137,8 +138,8 @@ class FileTransformer
                     'image_crop',
                     [
                         'path' => $pathinfo['dirname'] . '/' . $pathinfo['filename'],
-                        'width' => $size['w'],
-                        'height' => $size['h'],
+                        'width' => isset($size['w']) ? $size['w'] : null,
+                        'height' => isset($size['h']) ? $size['h'] : null,
                         'extension' => $pathinfo['extension'],
                     ]
                 );
