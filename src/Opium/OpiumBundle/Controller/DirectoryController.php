@@ -9,6 +9,45 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DirectoryController extends FOSRestController
 {
+
+    /**
+     * getDirectoriesAction
+     *
+     * @access public
+     *
+     * @Rest\View()
+     */
+    public function getDirectoriesAction()
+    {
+        return $this->getDirectoryAction('/');
+    }
+
+    /**
+     * getDirectoryAction
+     *
+     * @param mixed $path
+     * @access public
+     *
+     * @Rest\View()
+     */
+    public function getDirectoryAction($path)
+    {
+        $path = $this->getPath($path);
+        $fileList = [];
+
+        $files = $this->get('opium.finder.photo')
+            ->find($path);
+
+        return [
+            'parentDirectory' => $this->getParentPath($path),
+            'current' => $this->get('opium.finder.photo')->get($path),
+            'files' => $files,
+        ];
+    }
+
+
+
+
     /**
      * indexAction
      *
@@ -100,6 +139,10 @@ class DirectoryController extends FOSRestController
 
     private function getParentPath($path)
     {
+        if (strlen($path) < 2) {
+            return '/';
+        }
+
         $parentPath = substr($path, 0, strrpos($path, '/', -2));
         if ($parentPath !== false) {
             if ($parentPath) {

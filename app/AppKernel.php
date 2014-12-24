@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new Opium\OpiumBundle\OpiumBundle(),
+            new Opium\PhotoBundle\OpiumPhotoBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
