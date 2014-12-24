@@ -24,6 +24,8 @@
         "jms/serializer-bundle": "0.*",
         "symfony/finder": "2.*",
 
+        "nelmio/api-doc-bundle": "~2.7",
+
         "stojg/crop": "1.*"
     },
     "require-dev": {

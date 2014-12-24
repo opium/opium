@@ -9,6 +9,13 @@ use Opium\OpiumBundle\Http\ImagickResponse;
 
 class FileController extends Controller
 {
+    /**
+     * baseFileAction
+     *
+     * @param string $path
+     * @access public
+     * @return BinaryFileResponse
+     */
     public function baseFileAction($path)
     {
         $fullPath = $this->container->getParameter('photos_directory') . $path;

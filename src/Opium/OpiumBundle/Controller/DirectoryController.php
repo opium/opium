@@ -4,6 +4,7 @@ namespace Opium\OpiumBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 
 class DirectoryController extends FOSRestController
@@ -13,6 +14,10 @@ class DirectoryController extends FOSRestController
      *
      * @access public
      * @return void
+     *
+     * @ApiDoc(
+     *     description="Index"
+     * )
      *
      * @Rest\View()
      */

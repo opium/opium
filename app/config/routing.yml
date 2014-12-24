@@ -2,7 +2,11 @@ opium_api:
     resource: "@OpiumBundle/Resources/config/routing/api.yml"
     prefix:   /v1/{_format}
     requirements:
-        _format: json|xml
+        _format: json
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /doc
 
 opium_image:
     resource: "@OpiumBundle/Resources/config/routing/image.yml"
