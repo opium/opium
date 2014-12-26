@@ -90,7 +90,7 @@ class FileTransformer
         $thumbnailFile = $this->getDirectoryThumbnail($file, $dir);
 
         if ($thumbnailFile) {
-            $dir->setThumbnails($this->transformToFile($thumbnailFile)->getThumbnails());
+            $dir->setDirectoryThumbnail($this->transformToFile($thumbnailFile));
         }
 
         return $dir;
@@ -178,8 +178,6 @@ class FileTransformer
 
         $finder = new \Symfony\Component\Finder\Finder();
         $files = $finder->files()
-            ->in($file->getPathname() . '/')
-            ->depth(0)
             ->filter(function (\SplFileInfo $tmpFile) {
                 if (!in_array(strtolower($tmpFile->getExtension()), ['png', 'jpg', 'jpeg'])) {
                     return false;
@@ -196,7 +194,20 @@ class FileTransformer
         if (file_exists($configFile)) {
             $yaml = new \Symfony\Component\Yaml\Parser;
             $config = $yaml->parse(file_get_contents($configFile));
-            $files->name($config['photo']);
+            $lastSlash = strrpos($config['photo'], '/');
+            if ($lastSlash !== false) {
+                $folder = substr($config['photo'], 0, strrpos($config['photo'], '/'));
+                $filename = substr($config['photo'], strrpos($config['photo'], '/') + 1);
+
+                $files->in($this->photoDir . $folder . '/')
+                    ->path($filename);
+            } else {
+                $files->in($this->thumbsDir)
+                ->path($config['photo']);
+            }
+        } else {
+            $files->in($file->getPathname() . '/')
+            ->depth(0);
         }
 
         // get first

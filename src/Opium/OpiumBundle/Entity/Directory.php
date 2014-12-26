@@ -15,6 +15,37 @@ class Directory extends File
     private $children;
 
     /**
+     * directoryThumbnail
+     *
+     * @var Photo
+     * @access private
+     */
+    private $directoryThumbnail;
+
+    /**
+     * Gets the value of directoryThumbnail
+     *
+     * @return Photo
+     */
+    public function getDirectoryThumbnail()
+    {
+        return $this->directoryThumbnail;
+    }
+
+    /**
+     * Sets the value of directoryThumbnail
+     *
+     * @param string $directoryThumbnail description
+     *
+     * @return Directory
+     */
+    public function setDirectoryThumbnail(Photo $directoryThumbnail)
+    {
+        $this->directoryThumbnail = $directoryThumbnail;
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getType()

@@ -2,6 +2,10 @@ Opium\OpiumBundle\Entity\File:
     properties:
         finder: { exclude: true }
 
+        name: { type: string }
+        pathname: { type: string }
+        thumbnails: { type: array }
+
         parent:
             access_type: public_method
             read_only: true

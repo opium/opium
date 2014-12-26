@@ -1,4 +1,9 @@
 Opium\OpiumBundle\Entity\Photo: 
+    properties:
+        image:
+            type: array
+
+
     relations:
         -
             rel: self

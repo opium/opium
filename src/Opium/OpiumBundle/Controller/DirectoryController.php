@@ -52,29 +52,25 @@ class DirectoryController extends FOSRestController
     }
 
     /**
-     * postDirectoryAction
+     * Update a directory
      *
      * @param mixed $path
      * @access public
      * @return void
      *
-     * @Rest\View()
-     *
-     * @ApiDoc(
-     *     description="Index"
-     * )
+     * @ApiDoc(description="Update a directory")
+     * @Rest\View(serializerEnableMaxDepthChecks=true)
      */
-    public function postDirectoryAction($path, Request $request)
+    public function putDirectoryAction($path, Request $request)
     {
-        $path = $this->getPath($path);
+        $directory = $this->get('jms_serializer')->deserialize($request->getContent(), 'Opium\OpiumBundle\Entity\Directory', 'json');
 
-        $current = $request->request->get('current');
-        if (isset($current['photo'])) {
-            $dir = $this->container->getParameter('thumbs_directory') . $path;
-            file_put_contents($dir . '/config.yml', 'photo: ' . $current['photo']);
+        if ($directory->getDirectoryThumbnail()) {
+            $dir = $this->container->getParameter('thumbs_directory') . $directory->getPathname();
+            file_put_contents($dir . '/config.yml', 'photo: ' . $directory->getDirectoryThumbnail()->getPathname());
         }
 
-        return $this->indexAction($path);
+        return $this->get('opium.finder.photo')->get($directory->getPathname());
     }
 
     /**

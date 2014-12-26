@@ -7,6 +7,9 @@ Opium\OpiumBundle\Entity\Directory:
             type: array
             max_depth: 1
 
+        directoryThumbnail:
+            type: Opium\OpiumBundle\Entity\Photo
+
     relations:
         -
             rel: self
