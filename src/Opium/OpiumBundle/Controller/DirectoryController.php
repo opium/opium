@@ -15,7 +15,8 @@ class DirectoryController extends FOSRestController
      *
      * @access public
      *
-     * @Rest\View()
+     * @ApiDoc()
+     * @Rest\View(serializerEnableMaxDepthChecks=true)
      */
     public function getDirectoriesAction()
     {
@@ -28,84 +29,42 @@ class DirectoryController extends FOSRestController
      * @param mixed $path
      * @access public
      *
-     * @Rest\View()
+     * @Rest\View(serializerEnableMaxDepthChecks=true)
+     *
+     * @ApiDoc(
+     *     description="Get the selected directory information",
+     *     requirements={
+     *         {"name"="path", "dataType"="string", "description"="Wanted path"}
+     *     }
+     * )
      */
     public function getDirectoryAction($path)
     {
+        $path = urldecode($path);
         $path = $this->getPath($path);
         $fileList = [];
 
-        $files = $this->get('opium.finder.photo')
-            ->find($path);
+        //$files = $this->get('opium.finder.photo')
+        //    ->find($path);
 
-        return [
-            'parentDirectory' => $this->getParentPath($path),
-            'current' => $this->get('opium.finder.photo')->get($path),
-            'files' => $files,
-        ];
-    }
-
-
-
-
-    /**
-     * indexAction
-     *
-     * @access public
-     * @return void
-     *
-     * @ApiDoc(
-     *     description="Index"
-     * )
-     *
-     * @Rest\View()
-     */
-    public function indexAction($path)
-    {
-        $path = $this->getPath($path);
-        $fileList = [];
-
-        $files = $this->get('opium.finder.photo')
-            ->find($path);
-
-        return [
-            'parentDirectory' => $this->getParentPath($path),
-            'current' => $this->get('opium.finder.photo')->get($path),
-            'files' => $files,
-        ];
+        return $this->get('opium.finder.photo')->get($path);
+            //'files' => $files,
     }
 
     /**
-     * photoAction
-     *
-     * @param mixed $file
-     * @param mixed $photo
-     * @access public
-     * @return Response
-     *
-     * @Rest\View()
-     */
-    public function photoAction($path, $photo)
-    {
-        $file = $this->get('opium.finder.photo')
-            ->get($path . '/', $photo);
-
-        return [
-            'parentDirectory' => $this->getParentPath($path . '/' . $photo),
-            'photo' => $file,
-        ];
-    }
-
-    /**
-     * updateAction
+     * postDirectoryAction
      *
      * @param mixed $path
      * @access public
      * @return void
      *
      * @Rest\View()
+     *
+     * @ApiDoc(
+     *     description="Index"
+     * )
      */
-    public function updateAction($path, Request $request)
+    public function postDirectoryAction($path, Request $request)
     {
         $path = $this->getPath($path);
 
@@ -117,7 +76,6 @@ class DirectoryController extends FOSRestController
 
         return $this->indexAction($path);
     }
-
 
     /**
      * getPath
@@ -135,23 +93,5 @@ class DirectoryController extends FOSRestController
         }
 
         return $path;
-    }
-
-    private function getParentPath($path)
-    {
-        if (strlen($path) < 2) {
-            return '/';
-        }
-
-        $parentPath = substr($path, 0, strrpos($path, '/', -2));
-        if ($parentPath !== false) {
-            if ($parentPath) {
-                $parentPath = '/' . $parentPath . '/';
-            } else {
-                $parentPath = '/';
-            }
-        }
-
-        return $parentPath;
     }
 }

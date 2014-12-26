@@ -2,8 +2,17 @@
 
 namespace Opium\OpiumBundle\Entity;
 
+use Hateoas\Configuration\Annotation as Hateoas;
 use JMS\Serializer\Annotation as Serializer;
 
+use Opium\OpiumBundle\Finder\PhotoFinder;
+
+/**
+ * File
+ *
+ * @abstract
+ * @author Julien Deniau <julien.deniau@mapado.com>
+ */
 abstract class File
 {
     /**
@@ -29,6 +38,41 @@ abstract class File
      * @access protected
      */
     protected $thumbnails;
+
+    /**
+     * finder
+     *
+     * @var PhotoFinder
+     * @access protected
+     *
+     * @Serializer\Exclude
+     */
+    protected $finder;
+
+    /**
+     * setFinder
+     *
+     * @param PhotoFinder $finder
+     * @access public
+     * @return File
+     */
+    public function setFinder(PhotoFinder $finder)
+    {
+        $this->finder = $finder;
+        return $this;
+    }
+
+    /**
+     * getId
+     *
+     * @access public
+     * @return string
+     */
+    public function getId()
+    {
+        $id = urlencode($this->getPathname());
+        return $id ? $id : null;
+    }
 
     /**
      * Gets the value of name
@@ -97,6 +141,35 @@ abstract class File
     {
         $this->thumbnails = $thumbnails;
         return $this;
+    }
+
+    /**
+     * getParentPath
+     *
+     * @access public
+     * @return string
+     */
+    public function getParentPath()
+    {
+        $path = $this->getPathname();
+        if (strlen($path) < 2) {
+            return '';
+        }
+
+        $parentPath = substr($path, 0, strrpos($path, '/', -2));
+
+        return urlencode($parentPath);
+    }
+
+    /**
+     * getParent
+     *
+     * @access public
+     * @return Directory
+     */
+    public function getParent()
+    {
+        return $this->finder->get($this->getParentPath());
     }
 
     /**

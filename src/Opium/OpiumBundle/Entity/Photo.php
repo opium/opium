@@ -2,6 +2,14 @@
 
 namespace Opium\OpiumBundle\Entity;
 
+use Hateoas\Configuration\Annotation as Hateoas;
+
+/**
+ * Photo
+ *
+ * @uses File
+ * @author Julien Deniau <julien.deniau@mapado.com>
+ */
 class Photo extends File
 {
     /**

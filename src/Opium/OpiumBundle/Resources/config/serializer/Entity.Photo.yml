@@ -1,0 +1,9 @@
+Opium\OpiumBundle\Entity\Photo: 
+    relations:
+        -
+            rel: self
+            href:
+                route: opium_api_get_file
+                parameters:
+                    path: "expr(object.getId())"
+

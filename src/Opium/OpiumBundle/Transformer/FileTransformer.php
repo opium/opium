@@ -7,6 +7,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 use Opium\OpiumBundle\Entity\Directory;
 use Opium\OpiumBundle\Entity\Photo;
+use Opium\OpiumBundle\Finder\PhotoFinder;
 
 class FileTransformer
 {
@@ -43,6 +44,14 @@ class FileTransformer
     private $router;
 
     /**
+     * finder
+     *
+     * @var PhotoFinder
+     * @access private
+     */
+    private $finder;
+
+    /**
      * __construct
      *
      * @param string $photoDir
@@ -56,6 +65,12 @@ class FileTransformer
         $this->thumbsDir = $thumbsDir;
     }
 
+    public function setFinder(PhotoFinder $finder)
+    {
+        $this->finder = $finder;
+        return $this;
+    }
+
     /**
      * transformToDirectory
      *
@@ -66,6 +81,7 @@ class FileTransformer
     public function transformToDirectory(SplFileInfo $file)
     {
         $dir = new Directory();
+        $dir->setFinder($this->finder);
 
         $path = substr($file->getPathname(), strlen($this->photoDir)) . '/';
         $dir->setPathname($path)
@@ -90,6 +106,7 @@ class FileTransformer
     public function transformToFile(SplFileInfo $file)
     {
         $photo = new Photo();
+        $photo->setFinder($this->finder);
         $path = substr($file->getPathname(), strlen($this->photoDir));
         $photo->setPathname($path)
             ->setName($file->getRelativePathname());

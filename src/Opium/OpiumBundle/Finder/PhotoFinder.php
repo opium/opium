@@ -71,13 +71,12 @@ class PhotoFinder
      * get
      *
      * @param string $path
-     * @param string $filename
      * @access public
      * @return void
      */
-    public function get($path, $filename = null)
+    public function get($path)
     {
-        $relativePathname = $path . $filename;
+        $relativePathname = $path;
         $absolutePath = $this->photoDir . $relativePathname;
 
         $file = new SplFileInfo($absolutePath, $path, $relativePathname);

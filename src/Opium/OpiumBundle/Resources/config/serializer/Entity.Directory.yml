@@ -1,0 +1,17 @@
+Opium\OpiumBundle\Entity\Directory:
+    properties:
+        children:
+            expose: true
+            access_type: public_method
+            read_only: true
+            type: array
+            max_depth: 1
+
+    relations:
+        -
+            rel: self
+            href:
+                route: "opium_api_get_directory"
+                parameters: 
+                    path: "expr(object.getId())"
+
