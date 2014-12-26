@@ -163,7 +163,7 @@ abstract class File
 
         $parentPath = substr($path, 0, strrpos($path, '/', -2));
 
-        return urlencode($parentPath);
+        return $parentPath;
     }
 
     /**
@@ -174,8 +174,12 @@ abstract class File
      */
     public function getParent()
     {
+        if ($this->getPathname() == '/') {
+            return null;
+        }
+
         if (!isset($this->parent)) {
-            $this->parent = $this->finder->get(urldecode($this->getParentPath()));
+            $this->parent = $this->finder->get($this->getParentPath());
         }
         return $this->parent;
     }

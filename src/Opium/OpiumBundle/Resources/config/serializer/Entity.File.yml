@@ -22,7 +22,7 @@ Opium\OpiumBundle\Entity\File:
             href:
                 route: "opium_api_get_directory"
                 parameters: 
-                    path: "expr(object.getParentPath())"
+                    path: "expr(object.getParent().getId())"
             exclusion:
                 exclude_if: "expr(!object.getParentPath())"
 
