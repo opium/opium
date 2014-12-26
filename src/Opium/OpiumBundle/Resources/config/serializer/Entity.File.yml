@@ -2,7 +2,16 @@ Opium\OpiumBundle\Entity\File:
     properties:
         finder: { exclude: true }
 
+        parent:
+            access_type: public_method
+            read_only: true
+            max_depth: 1
+
     virtual_properties:
+        getId:
+            serialized_name: id
+            type: string
+
         getType:
             serialized_name: type
             type: string

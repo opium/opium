@@ -14,4 +14,12 @@ Opium\OpiumBundle\Entity\Directory:
                 route: "opium_api_get_directory"
                 parameters: 
                     path: "expr(object.getId())"
+            exclusion:
+                exclude_if: "expr(object.getPathname() == '/')"
 
+        -
+            rel: self
+            href:
+                route: "opium_api_get_directories"
+            exclusion:
+                exclude_if: "expr(object.getPathname() != '/')"

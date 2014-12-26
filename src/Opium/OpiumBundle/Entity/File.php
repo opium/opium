@@ -3,7 +3,6 @@
 namespace Opium\OpiumBundle\Entity;
 
 use Hateoas\Configuration\Annotation as Hateoas;
-use JMS\Serializer\Annotation as Serializer;
 
 use Opium\OpiumBundle\Finder\PhotoFinder;
 
@@ -44,10 +43,16 @@ abstract class File
      *
      * @var PhotoFinder
      * @access protected
-     *
-     * @Serializer\Exclude
      */
     protected $finder;
+
+    /**
+     * parent
+     *
+     * @var Directory
+     * @access private
+     */
+    private $parent;
 
     /**
      * setFinder
@@ -169,7 +174,10 @@ abstract class File
      */
     public function getParent()
     {
-        return $this->finder->get($this->getParentPath());
+        if (!isset($this->parent)) {
+            $this->parent = $this->finder->get(urldecode($this->getParentPath()));
+        }
+        return $this->parent;
     }
 
     /**
@@ -178,8 +186,6 @@ abstract class File
      * @abstract
      * @access public
      * @return string
-     *
-     * @Serializer\VirtualProperty
      */
     abstract public function getType();
 }
