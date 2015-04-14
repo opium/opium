@@ -40,28 +40,23 @@ class PhotoFinder
     /**
      * find
      *
-     * @param string $path
      * @access public
      * @return array
      */
-    public function find($path)
+    public function find()
     {
-        $absolutePath = $this->photoDir . $path;
+        $absolutePath = $this->photoDir;
 
         $finder = new Finder();
         $finder
             ->in($absolutePath)
-            ->depth(0)
+            //->depth(0)
             ->sortByType()
         ;
 
         $files = [];
         foreach ($finder as $file) {
-            if ($file->isDir()) {
-                $files[] = $this->fileTransformer->transformToDirectory($file);
-            } elseif ($file->isFile()) {
-                $files[] = $this->fileTransformer->transformToFile($file);
-            }
+            $files[] = $this->treatFile($file);
         }
 
         return $files;
@@ -73,14 +68,28 @@ class PhotoFinder
      * @param string $path
      * @access public
      * @return void
+    */
+//    public function get($path, $recursive = true)
+//    {
+//        $relativePathname = $path;
+//        $absolutePath = $this->photoDir . $relativePathname;
+//
+//        $file = new SplFileInfo($absolutePath, $path, $relativePathname);
+//
+//        return $this->treatFile($file, $recursive);
+//    }
+//
+
+    /**
+     * treatFile
+     *
+     * @param File $file
+     * @param bool $recursive
+     * @access private
+     * @return File
      */
-    public function get($path)
+    private function treatFile(SplFileInfo $file)
     {
-        $relativePathname = $path;
-        $absolutePath = $this->photoDir . $relativePathname;
-
-        $file = new SplFileInfo($absolutePath, $path, $relativePathname);
-
         if ($file->isDir()) {
             return $this->fileTransformer->transformToDirectory($file);
         } elseif ($file->isFile()) {

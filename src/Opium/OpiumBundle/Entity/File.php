@@ -2,10 +2,6 @@
 
 namespace Opium\OpiumBundle\Entity;
 
-use Hateoas\Configuration\Annotation as Hateoas;
-
-use Opium\OpiumBundle\Finder\PhotoFinder;
-
 /**
  * File
  *
@@ -14,6 +10,14 @@ use Opium\OpiumBundle\Finder\PhotoFinder;
  */
 abstract class File
 {
+    /**
+     * id
+     *
+     * @var string
+     * @access private
+     */
+    private $id;
+
     /**
      * name
      *
@@ -39,14 +43,6 @@ abstract class File
     protected $thumbnails;
 
     /**
-     * finder
-     *
-     * @var PhotoFinder
-     * @access protected
-     */
-    protected $finder;
-
-    /**
      * parent
      *
      * @var Directory
@@ -55,17 +51,12 @@ abstract class File
     private $parent;
 
     /**
-     * setFinder
+     * slug
      *
-     * @param PhotoFinder $finder
-     * @access public
-     * @return File
+     * @var string
+     * @access private
      */
-    public function setFinder(PhotoFinder $finder)
-    {
-        $this->finder = $finder;
-        return $this;
-    }
+    private $slug;
 
     /**
      * getId
@@ -75,8 +66,20 @@ abstract class File
      */
     public function getId()
     {
-        $id = urlencode($this->getPathname());
-        return $id ? $id : null;
+        return $this->id;
+    }
+
+    /**
+     * setId
+     *
+     * @param mixed $id
+     * @access private
+     * @return File
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 
     /**
@@ -149,24 +152,6 @@ abstract class File
     }
 
     /**
-     * getParentPath
-     *
-     * @access public
-     * @return string
-     */
-    public function getParentPath()
-    {
-        $path = $this->getPathname();
-        if (strlen($path) < 2) {
-            return '';
-        }
-
-        $parentPath = substr($path, 0, strrpos($path, '/', -2));
-
-        return $parentPath;
-    }
-
-    /**
      * getParent
      *
      * @access public
@@ -174,14 +159,37 @@ abstract class File
      */
     public function getParent()
     {
-        if ($this->getPathname() == '/') {
-            return null;
-        }
-
-        if (!isset($this->parent)) {
-            $this->parent = $this->finder->get($this->getParentPath());
-        }
         return $this->parent;
+    }
+
+    public function setParent(File $parent = null)
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+    /**
+     * setSlug
+     *
+     * @param string $slug
+     * @access public
+     * @return File
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
+     * getSlug
+     *
+     * @access public
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**

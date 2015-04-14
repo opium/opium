@@ -1,0 +1,8 @@
+Opium\OpiumBundle\Entity\Directory:
+    type: entity
+    extends: File
+
+    oneToMany:
+        children:
+            targetEntity: File
+            mappedBy: parent

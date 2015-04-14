@@ -2,7 +2,7 @@
 
 namespace Opium\OpiumBundle\Entity;
 
-use Hateoas\Configuration\Annotation as Hateoas;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Directory
@@ -12,6 +12,12 @@ use Hateoas\Configuration\Annotation as Hateoas;
  */
 class Directory extends File
 {
+    /**
+     * children
+     *
+     * @var mixed
+     * @access private
+     */
     private $children;
 
     /**
@@ -21,6 +27,16 @@ class Directory extends File
      * @access private
      */
     private $directoryThumbnail;
+
+    /**
+     * __construct
+     *
+     * @access public
+     */
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+    }
 
     /**
      * Gets the value of directoryThumbnail
@@ -61,10 +77,12 @@ class Directory extends File
      */
     public function getChildren()
     {
-        if (!isset($this->children)) {
-            $this->children = $this->finder->find($this->getPathname());
-        }
-
         return $this->children;
+    }
+
+    public function setChildren($children)
+    {
+        $this->children = $children;
+        return $this;
     }
 }

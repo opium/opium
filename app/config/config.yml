@@ -56,3 +56,27 @@ fos_rest:
         view_response_listener: force
 
 nelmio_api_doc: ~
+
+doctrine:
+    dbal:
+        connections:
+            opium:
+                driver:   "%database_driver%"
+                host:     "%database_host%"
+                dbname:   "%database_name%"
+                user:     "%database_user%"
+                password: "%database_password%"
+                path:     "%sqlite_path%"
+                charset: UTF8
+    orm:
+        default_entity_manager: opium
+        entity_managers:
+            opium:
+                connection: opium
+                mappings:
+                    OpiumBundle: ~
+
+stof_doctrine_extensions:
+    orm:
+        opium:
+            sluggable: true

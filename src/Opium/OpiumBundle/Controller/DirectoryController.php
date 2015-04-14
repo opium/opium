@@ -20,7 +20,7 @@ class DirectoryController extends FOSRestController
      */
     public function getDirectoriesAction()
     {
-        return $this->getDirectoryAction('/');
+        return $this->getDirectoryAction('');
     }
 
     /**
@@ -40,15 +40,8 @@ class DirectoryController extends FOSRestController
      */
     public function getDirectoryAction($path)
     {
-        $path = urldecode($path);
-        $path = $this->getPath($path);
-        $fileList = [];
-
-        //$files = $this->get('opium.finder.photo')
-        //    ->find($path);
-
-        return $this->get('opium.finder.photo')->get($path);
-            //'files' => $files,
+        $dir = $this->get('opium.repository.directory')->findOneBySlug($path);
+        return $dir;
     }
 
     /**

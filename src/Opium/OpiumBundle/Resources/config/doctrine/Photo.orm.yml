@@ -1,0 +1,4 @@
+Opium\OpiumBundle\Entity\Photo:
+    type: entity
+    extends: File
+

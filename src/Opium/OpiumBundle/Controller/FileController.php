@@ -21,9 +21,6 @@ class FileController extends FOSRestController
      */
     public function getFileAction($path)
     {
-        $path = urldecode($path);
-        $file = $this->get('opium.finder.photo')->get($path);
-
-        return $file;
+        return $this->get('opium.repository.photo')->findOneBySlug($path);
     }
 }

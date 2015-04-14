@@ -81,11 +81,17 @@ class FileTransformer
     public function transformToDirectory(SplFileInfo $file)
     {
         $dir = new Directory();
-        $dir->setFinder($this->finder);
 
         $path = substr($file->getPathname(), strlen($this->photoDir)) . '/';
         $dir->setPathname($path)
-            ->setName($file->getRelativePathname());
+            ->setName($file->getRelativePathname())
+        ;
+
+        //$parentPath = $this->getParentPath($path);
+        //if ($parentPath && $parentPath != $path) {
+        //    $parent = $this->finder->get($parentPath, false);
+        //    $dir->setParent($parent);
+        //}
 
         $thumbnailFile = $this->getDirectoryThumbnail($file, $dir);
 
@@ -106,10 +112,17 @@ class FileTransformer
     public function transformToFile(SplFileInfo $file)
     {
         $photo = new Photo();
-        $photo->setFinder($this->finder);
         $path = substr($file->getPathname(), strlen($this->photoDir));
         $photo->setPathname($path)
-            ->setName($file->getRelativePathname());
+            ->setName($file->getRelativePathname())
+        ;
+
+        //$parentPath = $this->getParentPath($path);
+        //if ($parentPath && $parentPath != $path) {
+        //    $parent = $this->finder->get($parentPath, false);
+        //    $dir->setParent($parent);
+        //}
+
 
         $imageSize = @getimagesize($file->getRealPath());
         if ($imageSize && in_array($imageSize['mime'], $this->allowedMimeTypes)) {
@@ -215,5 +228,16 @@ class FileTransformer
         foreach ($files as $thumbnailFile) {
             return $thumbnailFile;
         }
+    }
+
+    private function getParentPath($path)
+    {
+        if (strlen($path) < 2) {
+            return '';
+        }
+
+        $parentPath = substr($path, 0, strrpos($path, '/', -2));
+
+        return $parentPath;
     }
 }

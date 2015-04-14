@@ -19,5 +19,28 @@
             <argument>%photos_directory%</argument>
             <argument type="service" id="opium.transformer.file"></argument>
         </service>
+
+
+
+        <service id="opium.repository.photo" class="Doctrine\ORM\EntityRepository"
+            factory-service="doctrine.orm.opium_entity_manager"
+            factory-method="getRepository"
+        >
+            <argument>OpiumBundle:Photo</argument>
+        </service>
+
+        <service id="opium.repository.directory" class="Doctrine\ORM\EntityRepository"
+            factory-service="doctrine.orm.opium_entity_manager"
+            factory-method="getRepository"
+        >
+            <argument>OpiumBundle:Directory</argument>
+        </service>
+
+        <service id="opium.repository.file" class="Doctrine\ORM\EntityRepository"
+            factory-service="doctrine.orm.opium_entity_manager"
+            factory-method="getRepository"
+        >
+            <argument>OpiumBundle:File</argument>
+        </service>
     </services>
 </container>
