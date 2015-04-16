@@ -6,3 +6,7 @@ Opium\OpiumBundle\Entity\Directory:
         children:
             targetEntity: File
             mappedBy: parent
+
+    manyToOne:
+        directoryThumbnail:
+            targetEntity: Photo

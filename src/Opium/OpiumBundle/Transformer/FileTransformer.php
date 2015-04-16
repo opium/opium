@@ -93,7 +93,7 @@ class FileTransformer
         //    $dir->setParent($parent);
         //}
 
-        $thumbnailFile = $this->getDirectoryThumbnail($file, $dir);
+        $thumbnailFile = $this->getDirectoryThumbnail($file);
 
         if ($thumbnailFile) {
             $dir->setDirectoryThumbnail($this->transformToFile($thumbnailFile));
@@ -116,6 +116,7 @@ class FileTransformer
         $photo->setPathname($path)
             ->setName($file->getRelativePathname())
         ;
+        return $photo;
 
         //$parentPath = $this->getParentPath($path);
         //if ($parentPath && $parentPath != $path) {
@@ -124,21 +125,21 @@ class FileTransformer
         //}
 
 
-        $imageSize = @getimagesize($file->getRealPath());
-        if ($imageSize && in_array($imageSize['mime'], $this->allowedMimeTypes)) {
-            $imgPath = substr($file->getPathname(), strlen($this->photoDir));
-            $image = [
-                'mime' => $imageSize['mime'],
-                'width' => $imageSize[0],
-                'height' => $imageSize[1],
-                'original' => $this->router->generate('basefile', ['path' => $imgPath]),
-            ];
+        //$imageSize = @getimagesize($file->getRealPath());
+        //if ($imageSize && in_array($imageSize['mime'], $this->allowedMimeTypes)) {
+        //    $imgPath = substr($file->getPathname(), strlen($this->photoDir));
+        //    $image = [
+        //        'mime' => $imageSize['mime'],
+        //        'width' => $imageSize[0],
+        //        'height' => $imageSize[1],
+        //        'original' => $this->router->generate('basefile', ['path' => $imgPath]),
+        //    ];
 
-            $photo->setImage($image)
-                ->setThumbnails($this->getThumbnails($imgPath));
-        }
+        //    $photo->setImage($image)
+        //        ->setThumbnails($this->getThumbnails($imgPath));
+        //}
 
-        return $photo;
+        //return $photo;
     }
 
     /**
@@ -186,7 +187,7 @@ class FileTransformer
      * @access private
      * @return string
      */
-    private function getDirectoryThumbnail(SplFileInfo $file, Directory $dir)
+    private function getDirectoryThumbnail(SplFileInfo $file)
     {
 
         $finder = new \Symfony\Component\Finder\Finder();
@@ -203,25 +204,25 @@ class FileTransformer
             //->sortByName()
             ;
 
-        $configFile = $this->thumbsDir . $dir->getName() . '/config.yml';
-        if (file_exists($configFile)) {
-            $yaml = new \Symfony\Component\Yaml\Parser;
-            $config = $yaml->parse(file_get_contents($configFile));
-            $lastSlash = strrpos($config['photo'], '/');
-            if ($lastSlash !== false) {
-                $folder = substr($config['photo'], 0, strrpos($config['photo'], '/'));
-                $filename = substr($config['photo'], strrpos($config['photo'], '/') + 1);
+        //$configFile = $this->thumbsDir . $dir->getName() . '/config.yml';
+        //if (file_exists($configFile)) {
+        //    $yaml = new \Symfony\Component\Yaml\Parser;
+        //    $config = $yaml->parse(file_get_contents($configFile));
+        //    $lastSlash = strrpos($config['photo'], '/');
+        //    if ($lastSlash !== false) {
+        //        $folder = substr($config['photo'], 0, strrpos($config['photo'], '/'));
+        //        $filename = substr($config['photo'], strrpos($config['photo'], '/') + 1);
 
-                $files->in($this->photoDir . $folder . '/')
-                    ->path($filename);
-            } else {
-                $files->in($this->thumbsDir)
-                ->path($config['photo']);
-            }
-        } else {
+        //        $files->in($this->photoDir . $folder . '/')
+        //            ->path($filename);
+        //    } else {
+        //        $files->in($this->thumbsDir)
+        //        ->path($config['photo']);
+        //    }
+        //} else {
             $files->in($file->getPathname() . '/')
             ->depth(0);
-        }
+        //}
 
         // get first
         $thumbnailFile = null;

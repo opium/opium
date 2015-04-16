@@ -24,6 +24,8 @@ class PopulateCommand extends ContainerAwareCommand
     {
         $em = $this->getContainer()->get('doctrine.orm.opium_entity_manager');
         $repo = $this->getContainer()->get('opium.repository.file');
+        $dirRepo = $this->getContainer()->get('opium.repository.directory');
+        $photoRepo = $this->getContainer()->get('opium.repository.photo');
 
         $root = new Directory();
         $root->setName('');
@@ -31,7 +33,7 @@ class PopulateCommand extends ContainerAwareCommand
             $em->persist($root);
         }
 
-        $fileList = $this->getContainer()->get('opium.finder.photo')->find('');
+        $fileList = $this->getContainer()->get('opium.finder.photo')->find();
 
         foreach ($fileList as $file) {
             if (!$repo->findOneByName($file->getName())) {
@@ -44,12 +46,11 @@ class PopulateCommand extends ContainerAwareCommand
         var_dump('update parent');
 
         // update parents
-        $dirRepo = $this->getContainer()->get('opium.repository.directory');
-        $fileList = $repo->findAll();
-        foreach ($fileList as $file) {
-            $parent = $dirRepo->findOneByName($this->getParentPath($file));
-            if ($parent && $parent != $file) {
-                $file->setParent($parent);
+        $dirList = $dirRepo->findAll();
+        foreach ($dirList as $dir) {
+            $photo = $photoRepo->findOneByParent($dir);
+            if ($photo) {
+                $dir->setDirectoryThumbnail($photo);
             }
         }
 
