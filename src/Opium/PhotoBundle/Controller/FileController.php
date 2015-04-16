@@ -2,9 +2,11 @@
 
 namespace Opium\PhotoBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
+use Opium\OpiumBundle\Entity\Photo;
 use Opium\PhotoBundle\Http\ImagickResponse;
 
 class FileController extends Controller
@@ -15,10 +17,12 @@ class FileController extends Controller
      * @param string $path
      * @access public
      * @return BinaryFileResponse
+     *
+     * @ParamConverter("photo", class="OpiumBundle:Photo", options={"slug" = "slug"})
      */
-    public function baseFileAction($path)
+    public function baseFileAction(Photo $photo)
     {
-        $fullPath = $this->container->getParameter('photos_directory') . $path;
+        $fullPath = $this->container->getParameter('photos_directory') . $photo->getName();
 
         return new BinaryFileResponse($fullPath);
     }
@@ -32,14 +36,18 @@ class FileController extends Controller
      * @param int $height
      * @access public
      * @return Response
+     *
+     * @ParamConverter("photo", class="OpiumBundle:Photo", options={"slug" = "slug"})
      */
-    public function cropImageAction($path, $extension, $width, $height)
+    public function cropImageAction(Photo $photo, $width, $height)
     {
-        $writePath = $this->getWritePath($path, $extension, $width, $height);
+        $path = $photo->getName();
+
+        $writePath = $this->getWritePath($photo, $width, $height);
         if (file_exists($writePath)) {
             return new BinaryFileResponse($writePath);
         }
-        $filepath = $this->container->getParameter('photos_directory') . $path . '.' . $extension;
+        $filepath = $this->container->getParameter('photos_directory') . $path;
         $imagick = new \Imagick($filepath);
         if (!in_array($imagick->getImageMimeType(), $this->container->getParameter('allowed_mime_types'))) {
             throw $this->createNotFoundException('Wrong file mime type');
@@ -56,17 +64,16 @@ class FileController extends Controller
     /**
      * getWritePath
      *
-     * @param string $path
-     * @param string $extension
+     * @param Photo $photo
      * @param int $width
      * @param int $height
      * @access private
      * @return string
      */
-    private function getWritePath($path, $extension, $width, $height)
+    private function getWritePath(Photo $photo, $width, $height)
     {
         $dir = $this->container->getParameter('thumbs_directory') .
-            $path . '/';
+            $photo->getName() . '/';
 
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
@@ -74,6 +81,6 @@ class FileController extends Controller
 
         return $dir .
             $width . 'x' . $height .
-            '.' . $extension;
+            '.' . $photo->getExtension();
     }
 }

@@ -42,5 +42,10 @@
         >
             <argument>OpiumBundle:File</argument>
         </service>
+
+        <service id="opium.serializer_handler.thumbnails" class="Opium\OpiumBundle\Serializer\ThumbnailSerializer">
+            <argument type="service" id="router" />
+            <tag name="jms_serializer.event_listener" event="serializer.post_serialize" class="Opium\OpiumBundle\Entity\Photo" direction="serialization" />
+        </service>
     </services>
 </container>

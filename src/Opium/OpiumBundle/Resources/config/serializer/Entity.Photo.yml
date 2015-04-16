@@ -11,5 +11,12 @@ Opium\OpiumBundle\Entity\Photo:
             href:
                 route: opium_api_get_file
                 parameters:
-                    path: "expr(object.getId())"
+                    slug: "expr(object.getSlug())"
+
+        -
+            rel: original
+            href:
+                route: basefile
+                parameters:
+                    slug: "expr(object.getSlug())"
 

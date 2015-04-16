@@ -50,4 +50,15 @@ class Photo extends File
     {
         return 'file';
     }
+
+    /**
+     * getExtension
+     *
+     * @access public
+     * @return string
+     */
+    public function getExtension()
+    {
+        return pathinfo($this->getName(), PATHINFO_EXTENSION);
+    }
 }
