@@ -2,10 +2,22 @@
 
 namespace Opium\OpiumBundle\Entity;
 
-use JMS\Serializer\Annotation as Serializer;
-
+/**
+ * File
+ *
+ * @abstract
+ * @author Julien Deniau <julien.deniau@mapado.com>
+ */
 abstract class File
 {
+    /**
+     * id
+     *
+     * @var string
+     * @access private
+     */
+    private $id;
+
     /**
      * name
      *
@@ -29,6 +41,46 @@ abstract class File
      * @access protected
      */
     protected $thumbnails;
+
+    /**
+     * parent
+     *
+     * @var Directory
+     * @access private
+     */
+    private $parent;
+
+    /**
+     * slug
+     *
+     * @var string
+     * @access private
+     */
+    private $slug;
+
+    /**
+     * getId
+     *
+     * @access public
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * setId
+     *
+     * @param mixed $id
+     * @access private
+     * @return File
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     /**
      * Gets the value of name
@@ -100,13 +152,52 @@ abstract class File
     }
 
     /**
+     * getParent
+     *
+     * @access public
+     * @return Directory
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    public function setParent(File $parent = null)
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+    /**
+     * setSlug
+     *
+     * @param string $slug
+     * @access public
+     * @return File
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
+     * getSlug
+     *
+     * @access public
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
      * getType
      *
      * @abstract
      * @access public
      * @return string
-     *
-     * @Serializer\VirtualProperty
      */
     abstract public function getType();
 }

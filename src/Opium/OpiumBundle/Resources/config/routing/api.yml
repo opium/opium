@@ -1,24 +1,26 @@
-opium_photo:
-    path:  "/{path}/{photo}"
-    defaults: 
-        _controller: OpiumBundle:Directory:photo
-    requirements:
-        path: "|.+"
-        photo: "[^/]+"
-        _method: GET
+#opium.api.photo:
+#    path:  "/{path}/{photo}"
+#    defaults: 
+#        _controller: OpiumBundle:Directory:photo
+#    requirements:
+#        path: "|.+"
+#        photo: "[^/]+"
+#        _method: GET
 
-opium_directory:
-    path:  "/{path}/"
-    defaults: 
-        _controller: OpiumBundle:Directory:index
-    requirements:
-        path: "|.+"
-        _method: GET
+api.directories:
+    type: rest
+    resource: "OpiumBundle:Directory"
+    name_prefix: opium_api_
 
-opium_directory_update:
-    path:  "/{path}/"
-    defaults: 
-        _controller: OpiumBundle:Directory:update
-    requirements:
-        path: "|.+"
-        _method: POST
+api.files:
+    type: rest
+    resource: "OpiumBundle:File"
+    name_prefix: opium_api_
+
+#opium_directory_update:
+#    path:  "/{path}/"
+#    defaults: 
+#        _controller: OpiumBundle:Directory:update
+#    requirements:
+#        path: "|.+"
+#        _method: POST

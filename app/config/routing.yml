@@ -1,13 +1,12 @@
 opium_api:
+    type: rest
     resource: "@OpiumBundle/Resources/config/routing/api.yml"
-    prefix:   /v1/{_format}
-    requirements:
-        _format: json
+    prefix:   /v1
 
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /doc
 
 opium_image:
-    resource: "@OpiumBundle/Resources/config/routing/image.yml"
+    resource: "@OpiumPhotoBundle/Resources/config/image.yml"
     prefix:   /

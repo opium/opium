@@ -1,0 +1,37 @@
+Opium\OpiumBundle\Entity\File:
+    exclusion_policy: ALL
+    properties:
+    #    finder: { exclude: true }
+
+        id: { type: integer }
+        name: { type: string }
+        pathname: { type: string }
+        thumbnails: { type: array }
+
+        parent:
+            expose: true
+
+        slug:
+            type: string
+
+    virtual_properties:
+        getType:
+            serialized_name: type
+            type: string
+
+    relations:
+        -
+            rel: parent
+            href:
+                route: "opium_api_get_directory"
+                parameters: 
+                    path: "expr(object.getParent().getId())"
+            exclusion:
+                exclude_if: "expr(!object.getParent() || !object.getParent().getName())"
+
+        -
+            rel: parent
+            href:
+                route: "opium_api_get_directories"
+            exclusion:
+                exclude_if: "expr(object.getParent() && object.getParent().getName())"

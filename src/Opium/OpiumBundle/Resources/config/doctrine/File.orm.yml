@@ -1,0 +1,27 @@
+Opium\OpiumBundle\Entity\File:
+    type: entity
+    table: file
+    inheritanceType: SINGLE_TABLE
+
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+
+    fields:
+        name:
+            type: string
+            length: 255
+
+        slug:
+            type: string
+            length: 255
+            gedmo:
+                slug:
+                    fields:
+                        - name
+
+    manyToOne:
+        parent:
+            targetEntity: Directory
+            inversedBy: children

@@ -1,0 +1,44 @@
+Opium\OpiumBundle\Entity\Directory:
+    exclusion_policy: all
+    properties:
+        directoryThumbnail:
+            expose: false
+            type: Opium\OpiumBundle\Entity\Photo
+
+        children:
+            expose: true
+            type: array
+            max_depth: 1
+
+    relations:
+        -
+            rel: self
+            href:
+                route: "opium_api_get_directory"
+                parameters: 
+                    path: "expr(object.getId())"
+            exclusion:
+                exclude_if: "expr(object.getName())"
+
+        -
+            rel: self
+            href:
+                route: "opium_api_get_directories"
+            exclusion:
+                exclude_if: "expr(!object.getName())"
+
+        -
+            rel: directory_thumbnail
+            embedded: "expr(object.getDirectoryThumbnail())"
+
+        #-
+        #    rel: children
+        #    embedded: 
+        #        content: "expr(object.getChildren())"
+        #        exclusion: 
+        #            maxDepth: 1
+        #            max_depth: 1
+        #    exclusion: 
+        #        maxDepth: 1
+        #        max_depth: 1
+

@@ -1,6 +1,6 @@
 <?php
 
-namespace Opium\OpiumBundle\Http;
+namespace Opium\PhotoBundle\Http;
 
 use \Imagick;
 use Symfony\Component\HttpFoundation\Response;

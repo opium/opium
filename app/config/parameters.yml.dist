@@ -6,6 +6,14 @@ parameters:
     debug_redirects:        false
     use_assetic_controller: false
 
+    database_driver:    pdo_sqlite
+    database_host:      localhost
+    database_name:      test_project
+    database_user:      root
+    database_password:  password
+
+    sqlite_path:        "%kernel.root_dir%/../photos.db"
+
     photos_directory: "%kernel.root_dir%/../photos/"
     thumbs_directory: "%kernel.root_dir%/../.thumbs/"
     allowed_mime_types: 

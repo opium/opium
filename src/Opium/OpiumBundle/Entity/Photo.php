@@ -2,6 +2,14 @@
 
 namespace Opium\OpiumBundle\Entity;
 
+use Hateoas\Configuration\Annotation as Hateoas;
+
+/**
+ * Photo
+ *
+ * @uses File
+ * @author Julien Deniau <julien.deniau@mapado.com>
+ */
 class Photo extends File
 {
     /**
@@ -41,5 +49,16 @@ class Photo extends File
     public function getType()
     {
         return 'file';
+    }
+
+    /**
+     * getExtension
+     *
+     * @access public
+     * @return string
+     */
+    public function getExtension()
+    {
+        return pathinfo($this->getName(), PATHINFO_EXTENSION);
     }
 }

@@ -1,0 +1,22 @@
+Opium\OpiumBundle\Entity\Photo:
+    exclusion_policy: all
+    properties:
+        image:
+            type: array
+
+
+    relations:
+        -
+            rel: self
+            href:
+                route: opium_api_get_file
+                parameters:
+                    slug: "expr(object.getSlug())"
+
+        -
+            rel: original
+            href:
+                route: basefile
+                parameters:
+                    slug: "expr(object.getSlug())"
+

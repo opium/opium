@@ -9,76 +9,62 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DirectoryController extends FOSRestController
 {
+
     /**
-     * indexAction
+     * getDirectoriesAction
      *
      * @access public
-     * @return void
+     *
+     * @ApiDoc()
+     * @Rest\View(serializerEnableMaxDepthChecks=true)
+     */
+    public function getDirectoriesAction()
+    {
+        return $this->getDirectoryAction('');
+    }
+
+    /**
+     * getDirectoryAction
+     *
+     * @param mixed $path
+     * @access public
+     *
+     * @Rest\View(serializerEnableMaxDepthChecks=true)
      *
      * @ApiDoc(
-     *     description="Index"
+     *     description="Get the selected directory information",
+     *     requirements={
+     *         {"name"="path", "dataType"="string", "description"="Wanted path"}
+     *     }
      * )
-     *
-     * @Rest\View()
      */
-    public function indexAction($path)
+    public function getDirectoryAction($path)
     {
-        $path = $this->getPath($path);
-        $fileList = [];
-
-        $files = $this->get('opium.finder.photo')
-            ->find($path);
-
-        return [
-            'parentDirectory' => $this->getParentPath($path),
-            'current' => $this->get('opium.finder.photo')->get($path),
-            'files' => $files,
-        ];
+        $dir = $this->get('opium.repository.directory')->findOneBySlug($path);
+        return $dir;
     }
 
     /**
-     * photoAction
-     *
-     * @param mixed $file
-     * @param mixed $photo
-     * @access public
-     * @return Response
-     *
-     * @Rest\View()
-     */
-    public function photoAction($path, $photo)
-    {
-        $file = $this->get('opium.finder.photo')
-            ->get($path . '/', $photo);
-
-        return [
-            'parentDirectory' => $this->getParentPath($path . '/' . $photo),
-            'photo' => $file,
-        ];
-    }
-
-    /**
-     * updateAction
+     * Update a directory
      *
      * @param mixed $path
      * @access public
      * @return void
      *
-     * @Rest\View()
+     * @ApiDoc(description="Update a directory")
+     * @Rest\View(serializerEnableMaxDepthChecks=true)
      */
-    public function updateAction($path, Request $request)
+    public function putDirectoryAction($path, Request $request)
     {
-        $path = $this->getPath($path);
+        $directory = $this->get('jms_serializer')->deserialize($request->getContent(), 'Opium\OpiumBundle\Entity\Directory', 'json');
 
-        $current = $request->request->get('current');
-        if (isset($current['photo'])) {
-            $dir = $this->container->getParameter('thumbs_directory') . $path;
-            file_put_contents($dir . '/config.yml', 'photo: ' . $current['photo']);
+        if ($directory->getDirectoryThumbnail()) {
+            $dir = $this->container->getParameter('thumbs_directory') . $directory->getPathname();
+            file_put_contents($dir . '/config.yml', 'photo: ' . $directory->getDirectoryThumbnail()->getPathname());
         }
 
-        return $this->indexAction($path);
+        return $this->get('opium.finder.photo')->get($directory->getPathname());
     }
-
 
     /**
      * getPath
@@ -96,19 +82,5 @@ class DirectoryController extends FOSRestController
         }
 
         return $path;
-    }
-
-    private function getParentPath($path)
-    {
-        $parentPath = substr($path, 0, strrpos($path, '/', -2));
-        if ($parentPath !== false) {
-            if ($parentPath) {
-                $parentPath = '/' . $parentPath . '/';
-            } else {
-                $parentPath = '/';
-            }
-        }
-
-        return $parentPath;
     }
 }

@@ -1,0 +1,14 @@
+image_crop:
+    path:  "/{slug}/thumbs/{width}-{height}"
+    defaults: 
+        _controller: OpiumPhotoBundle:File:cropImage
+    requirements:
+        _method: GET
+
+basefile:
+    path:  "/{slug}"
+    defaults: 
+        _controller: OpiumPhotoBundle:File:baseFile
+    requirements:
+        _method: GET
+
