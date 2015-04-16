@@ -50,7 +50,6 @@ class PhotoFinder
         $finder = new Finder();
         $finder
             ->in($absolutePath)
-            //->depth(0)
             ->sortByType()
         ;
 
@@ -61,24 +60,6 @@ class PhotoFinder
 
         return $files;
     }
-
-    /**
-     * get
-     *
-     * @param string $path
-     * @access public
-     * @return void
-    */
-//    public function get($path, $recursive = true)
-//    {
-//        $relativePathname = $path;
-//        $absolutePath = $this->photoDir . $relativePathname;
-//
-//        $file = new SplFileInfo($absolutePath, $path, $relativePathname);
-//
-//        return $this->treatFile($file, $recursive);
-//    }
-//
 
     /**
      * treatFile
