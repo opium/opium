@@ -6,13 +6,6 @@
 
     <services>
         <service id="opium.transformer.file" class="Opium\OpiumBundle\Transformer\FileTransformer" public="false">
-            <argument>%photos_directory%</argument>
-            <argument type="service" id="router"></argument>
-            <argument>%allowed_mime_types%</argument>
-            <argument>%thumbs_directory%</argument>
-            <call method="setFinder">
-                <argument type="service" id="opium.finder.photo"></argument>
-            </call>
         </service>
 
         <service id="opium.finder.photo" class="Opium\OpiumBundle\Finder\PhotoFinder">

@@ -28,24 +28,38 @@ class PopulateCommand extends ContainerAwareCommand
         $photoRepo = $this->getContainer()->get('opium.repository.photo');
 
         $root = new Directory();
-        $root->setName('');
-        if (!$repo->findOneByName('')) {
+        $root->setPathname('')
+            ->setName('');
+        if (!$repo->findOneByPathname('')) {
             $em->persist($root);
         }
 
         $fileList = $this->getContainer()->get('opium.finder.photo')->find();
 
         foreach ($fileList as $file) {
-            if (!$repo->findOneByName($file->getName())) {
+            if (!$repo->findOneByPathname($file->getPathname())) {
                 $em->persist($file);
             }
         }
 
         $em->flush();
 
-        var_dump('update parent');
+        $output->writeln('update parent');
+        $fileList = $repo->findAll();
 
-        // update parents
+        // update parent
+        foreach ($fileList as $file) {
+            $parentPath = $this->getParentPath($file);
+            $dir = $dirRepo->findOneByPathname($parentPath);
+            if ($dir && $dir != $file) {
+                $file->setParent($dir);
+            }
+        }
+        $em->flush();
+
+        $output->writeln('update cover');
+
+        // update photo
         $dirList = $dirRepo->findAll();
         foreach ($dirList as $dir) {
             $photo = $photoRepo->findOneByParent($dir);
@@ -60,7 +74,7 @@ class PopulateCommand extends ContainerAwareCommand
 
     private function getParentPath(File $file)
     {
-        $path = $file->getName();
+        $path = $file->getPathname();
         if (strlen($path) < 2) {
             return '';
         }

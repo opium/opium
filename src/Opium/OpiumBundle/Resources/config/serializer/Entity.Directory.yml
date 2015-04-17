@@ -1,9 +1,9 @@
 Opium\OpiumBundle\Entity\Directory:
     exclusion_policy: all
     properties:
-        directoryThumbnail:
-            expose: false
-            type: Opium\OpiumBundle\Entity\Photo
+        #directoryThumbnail:
+        #    expose: true
+        #    type: Opium\OpiumBundle\Entity\Photo
 
         children:
             expose: true

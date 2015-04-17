@@ -20,7 +20,7 @@ class DirectoryController extends FOSRestController
      */
     public function getDirectoriesAction()
     {
-        return $this->getDirectoryAction('');
+        return $this->get('opium.repository.directory')->findOneBySlug('');
     }
 
     /**
@@ -54,16 +54,22 @@ class DirectoryController extends FOSRestController
      * @ApiDoc(description="Update a directory")
      * @Rest\View(serializerEnableMaxDepthChecks=true)
      */
-    public function putDirectoryAction($path, Request $request)
+    public function putDirectoryAction($id, Request $request)
     {
-        $directory = $this->get('jms_serializer')->deserialize($request->getContent(), 'Opium\OpiumBundle\Entity\Directory', 'json');
+        // update only the directory thumbnail for now
+        $post = $request->request->all();
+        $coverId = $post['_embedded']['directory_thumbnail']['id'];
 
-        if ($directory->getDirectoryThumbnail()) {
-            $dir = $this->container->getParameter('thumbs_directory') . $directory->getPathname();
-            file_put_contents($dir . '/config.yml', 'photo: ' . $directory->getDirectoryThumbnail()->getPathname());
-        }
+        $photo = $this->get('opium.repository.photo')->find($coverId);
+        $directory = $this->get('opium.repository.directory')->find($id);
 
-        return $this->get('opium.finder.photo')->get($directory->getPathname());
+        //$directory = $this->get('jms_serializer')->deserialize($request->getContent(), 'Opium\OpiumBundle\Entity\Directory', 'json');
+        $directory->setDirectoryThumbnail($photo);
+
+        $em = $this->get('doctrine')->getManager();
+        //$em->merge($directory);
+        $em->flush();
+        return $directory;
     }
 
     /**

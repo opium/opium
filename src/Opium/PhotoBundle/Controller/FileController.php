@@ -22,7 +22,7 @@ class FileController extends Controller
      */
     public function baseFileAction(Photo $photo)
     {
-        $fullPath = $this->container->getParameter('photos_directory') . $photo->getName();
+        $fullPath = $this->container->getParameter('photos_directory') . $photo->getPathname();
 
         return new BinaryFileResponse($fullPath);
     }
@@ -41,7 +41,7 @@ class FileController extends Controller
      */
     public function cropImageAction(Photo $photo, $width, $height)
     {
-        $path = $photo->getName();
+        $path = $photo->getPathname();
 
         $writePath = $this->getWritePath($photo, $width, $height);
         if (file_exists($writePath)) {
@@ -73,7 +73,7 @@ class FileController extends Controller
     private function getWritePath(Photo $photo, $width, $height)
     {
         $dir = $this->container->getParameter('thumbs_directory') .
-            $photo->getName() . '/';
+            $photo->getPathname() . '/';
 
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);

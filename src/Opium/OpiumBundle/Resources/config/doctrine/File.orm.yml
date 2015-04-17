@@ -9,9 +9,13 @@ Opium\OpiumBundle\Entity\File:
             generator: { strategy: AUTO }
 
     fields:
-        name:
+        pathname:
             type: string
             length: 255
+
+        name:
+            type: string
+            length: 100
 
         slug:
             type: string
