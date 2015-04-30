@@ -51,6 +51,22 @@ abstract class File
     private $parent;
 
     /**
+     * previous
+     *
+     * @var File
+     * @access private
+     */
+    private $previous;
+
+    /**
+     * next
+     *
+     * @var File
+     * @access private
+     */
+    private $next;
+
+    /**
      * slug
      *
      * @var string
@@ -165,6 +181,54 @@ abstract class File
     public function setParent(File $parent = null)
     {
         $this->parent = $parent;
+        return $this;
+    }
+
+    /**
+     * getPrevious
+     *
+     * @access public
+     * @return File
+     */
+    public function getPrevious()
+    {
+        return $this->previous;
+    }
+
+    /**
+     * setPrevious
+     *
+     * @param File $previous
+     * @access public
+     * @return File
+     */
+    public function setPrevious(File $previous = null)
+    {
+        $this->previous = $previous;
+        return $this;
+    }
+
+    /**
+     * getNext
+     *
+     * @access public
+     * @return File
+     */
+    public function getNext()
+    {
+        return $this->next;
+    }
+
+    /**
+     * setNext
+     *
+     * @param File $next
+     * @access public
+     * @return File
+     */
+    public function setNext(File $next = null)
+    {
+        $this->next = $next;
         return $this;
     }
 

@@ -22,7 +22,14 @@ class FileController extends FOSRestController
     public function getFileAction($slug)
     {
         $file = $this->get('opium.repository.photo')->findOneBySlug($slug);
+        $neighbour = $file->getParent()->getChildren();
+        $index = $neighbour->indexOf($file);
 
+        $previous = $neighbour[$index - 1];
+        $next = $neighbour[$index + 1];
+
+        $file->setPrevious($previous)
+            ->setNext($next);
 
         return $file;
     }

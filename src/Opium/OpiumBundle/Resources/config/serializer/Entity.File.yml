@@ -12,6 +12,16 @@ Opium\OpiumBundle\Entity\File:
             type: Opium\OpiumBundle\Entity\File
             max_depth: 1
 
+        previous:
+            expose: true
+            type: Opium\OpiumBundle\Entity\File
+            max_depth: 1
+
+        next:
+            expose: true
+            type: Opium\OpiumBundle\Entity\File
+            max_depth: 1
+
         slug:
             type: string
 
