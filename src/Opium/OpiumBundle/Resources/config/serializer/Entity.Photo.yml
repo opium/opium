@@ -3,6 +3,8 @@ Opium\OpiumBundle\Entity\Photo:
     properties:
         image:
             type: array
+        position:
+            type: array
 
 
     relations:

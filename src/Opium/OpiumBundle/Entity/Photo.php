@@ -20,6 +20,8 @@ class Photo extends File
      */
     private $image;
 
+    private $position;
+
     /**
      * Gets the value of image
      *
@@ -60,5 +62,16 @@ class Photo extends File
     public function getExtension()
     {
         return pathinfo($this->getName(), PATHINFO_EXTENSION);
+    }
+
+    public function setPosition($position)
+    {
+        $this->position = $position;
+        return $this;
+    }
+
+    public function getPosition()
+    {
+        return $this->position;
     }
 }

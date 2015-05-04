@@ -31,6 +31,8 @@ class FileController extends FOSRestController
         $file->setPrevious($previous)
             ->setNext($next);
 
+        $file->setPosition(['lat' => 59.91, 'lng' => 10.75]);
+
         return $file;
     }
 }
