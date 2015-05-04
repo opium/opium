@@ -15,7 +15,7 @@ class FileController extends FOSRestController
      * @access public
      * @return Response
      *
-     * @Rest\View()
+     * @Rest\View(serializerEnableMaxDepthChecks=true)
      *
      * @ApiDoc()
      */
