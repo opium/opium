@@ -2,6 +2,8 @@
 
 namespace Opium\OpiumBundle\Transformer;
 
+use Imagick;
+use ImagickException;
 use Symfony\Component\Finder\SplFileInfo;
 
 use Opium\OpiumBundle\Entity\Directory;
@@ -31,7 +33,15 @@ class FileTransformer
      */
     public function transformToFile(SplFileInfo $file)
     {
-        return $this->transform(new Photo(), $file);
+        $photo = $this->transform(new Photo(), $file);
+        try {
+            $imagick = new Imagick($file->getRealPath());
+            $photo->setExifData($imagick->getImageProperties('exif:*'));
+        } catch (ImagickException $e) {
+            ld($e, $file);
+        }
+
+        return $photo;
     }
 
     /**

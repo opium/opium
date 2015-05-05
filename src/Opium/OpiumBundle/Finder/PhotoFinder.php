@@ -2,6 +2,7 @@
 
 namespace Opium\OpiumBundle\Finder;
 
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Opium\OpiumBundle\Transformer\FileTransformer;
@@ -43,7 +44,7 @@ class PhotoFinder
      * @access public
      * @return array
      */
-    public function find()
+    public function find($output)
     {
         $absolutePath = $this->photoDir;
 
@@ -53,9 +54,21 @@ class PhotoFinder
             ->sortByType()
         ;
 
+
+        if ($output) {
+            $progress = new ProgressBar($output, count($finder));
+            $progress->start();
+        }
+
         $files = [];
         foreach ($finder as $file) {
             $files[] = $this->treatFile($file);
+            if ($output) {
+                $progress->advance();
+            }
+        }
+        if ($output) {
+            $progress->finish();
         }
 
         return $files;

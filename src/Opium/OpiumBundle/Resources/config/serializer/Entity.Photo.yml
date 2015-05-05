@@ -4,6 +4,10 @@ Opium\OpiumBundle\Entity\Photo:
         image:
             type: array
 
+    virtual_properties:
+        getPosition:
+            type: array
+
 
     relations:
         -

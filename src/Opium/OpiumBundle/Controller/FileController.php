@@ -31,6 +31,7 @@ class FileController extends FOSRestController
         $file->setPrevious($previous)
             ->setNext($next);
 
+
         return $file;
     }
 }
