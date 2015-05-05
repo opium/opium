@@ -3,8 +3,7 @@ Opium\OpiumBundle\Entity\Photo:
     extends: File
 
     fields:
-        exifData:
-            name: exif_data
+        exif:
             type: json_array
             nullable: true
 

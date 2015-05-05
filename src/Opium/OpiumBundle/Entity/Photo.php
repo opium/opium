@@ -20,7 +20,7 @@ class Photo extends File
      */
     private $image;
 
-    private $exifData;
+    private $exif;
 
     /**
      * Gets the value of image
@@ -72,30 +72,30 @@ class Photo extends File
      */
     public function getPosition()
     {
-        return $this->positionFromExif($this->exifData);
+        return $this->positionFromExif($this->exif);
     }
 
     /**
-     * getExifData
+     * getExif
      *
      * @access public
      * @return array
      */
-    public function getExifData()
+    public function getExif()
     {
-        return $this->exifData;
+        return $this->exif;
     }
 
     /**
-     * setExifData
+     * setExif
      *
-     * @param float $exifData
+     * @param float $exif
      * @access public
      * @return Photo
      */
-    public function setExifData($exifData)
+    public function setExif($exif)
     {
-        $this->exifData = $exifData;
+        $this->exif = $exif;
         return $this;
     }
 

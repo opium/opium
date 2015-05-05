@@ -36,7 +36,12 @@ class FileTransformer
         $photo = $this->transform(new Photo(), $file);
         try {
             $imagick = new Imagick($file->getRealPath());
-            $photo->setExifData($imagick->getImageProperties('exif:*'));
+            $tmpExif = $imagick->getImageProperties('exif:*');
+            $exif = [];
+            foreach ($tmpExif as $key => $value) {
+                $exif[str_replace('exif:', '', $key)] = $value;
+            }
+            $photo->setExif($exif);
         } catch (ImagickException $e) {
             ld($e, $file);
         }
