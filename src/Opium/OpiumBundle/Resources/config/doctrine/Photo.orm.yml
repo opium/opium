@@ -2,3 +2,9 @@ Opium\OpiumBundle\Entity\Photo:
     type: entity
     extends: File
 
+    fields:
+        exifData:
+            name: exif_data
+            type: json_array
+            nullable: true
+

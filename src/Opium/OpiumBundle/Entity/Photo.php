@@ -20,7 +20,7 @@ class Photo extends File
      */
     private $image;
 
-    private $position;
+    private $exifData;
 
     /**
      * Gets the value of image
@@ -64,14 +64,96 @@ class Photo extends File
         return pathinfo($this->getName(), PATHINFO_EXTENSION);
     }
 
-    public function setPosition($position)
+    /**
+     * getPosition
+     *
+     * @access public
+     * @return array
+     */
+    public function getPosition()
     {
-        $this->position = $position;
+        return $this->positionFromExif($this->exifData);
+    }
+
+    /**
+     * getExifData
+     *
+     * @access public
+     * @return array
+     */
+    public function getExifData()
+    {
+        return $this->exifData;
+    }
+
+    /**
+     * setExifData
+     *
+     * @param float $exifData
+     * @access public
+     * @return Photo
+     */
+    public function setExifData($exifData)
+    {
+        $this->exifData = $exifData;
         return $this;
     }
 
-    public function getPosition()
+    /**
+     * positionFromExif
+     *
+     * @access private
+     * @return array
+     */
+    private function positionFromExif($exif)
     {
-        return $this->position;
+        if (empty($exif['exif:GPSLatitude']) || empty($exif['exif:GPSLatitudeRef'])
+            || empty($exif['exif:GPSLongitude']) || empty($exif['exif:GPSLongitudeRef'])) {
+                return;
+        }
+
+        $lat = explode(',', $exif['exif:GPSLatitude']);
+        $latRef = $exif['exif:GPSLatitudeRef'];
+        $lng = explode(',', $exif['exif:GPSLongitude']);
+        $lngRef = $exif['exif:GPSLongitudeRef'];
+
+        return [
+            'lat' => $this->toDecimal(trim($lat[0]), trim($lat[1]), trim($lat[2]), $latRef),
+            'lng' => $this->toDecimal(trim($lng[0]), trim($lng[1]), trim($lng[2]), $lngRef),
+        ];
+    }
+
+    /**
+     * toDecimal
+     *
+     * @param mixed $deg
+     * @param mixed $min
+     * @param mixed $sec
+     * @param mixed $hem
+     * @access private
+     * @return double
+     */
+    private function toDecimal($deg, $min, $sec, $hem)
+    {
+        $d = $this->getValue($deg) + $this->getValue($min, 60) + $this->getValue($sec, 36000000);
+        return ($hem=='S' || $hem=='W') ? $d *= -1 : $d;
+    }
+
+    /**
+     * getValue
+     *
+     * @param mixed $deg
+     * @param int $multiplier
+     * @access private
+     * @return double
+     */
+    private function getValue($deg, $multiplier = 1)
+    {
+        if (strpos($deg, '/') !== false) {
+            list($a, $b) = explode('/', $deg);
+            $deg = $a / $b;
+        }
+
+        return $deg / $multiplier;
     }
 }
