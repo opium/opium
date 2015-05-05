@@ -16,6 +16,7 @@ class PopulateCommand extends ContainerAwareCommand
     {
         $this
             ->setName('opium:populate')
+            ->addOption('truncate', null, InputOption::VALUE_NONE, 'Truncate table before re-inserting photos')
             ->setDescription('Populate database from files')
         ;
     }
@@ -27,6 +28,11 @@ class PopulateCommand extends ContainerAwareCommand
         $dirRepo = $this->getContainer()->get('opium.repository.directory');
         $photoRepo = $this->getContainer()->get('opium.repository.photo');
 
+        if ($input->getOption('truncate')) {
+            $this->truncateTables('file');
+            $output->writeln('table truncated');
+        }
+
         $root = new Directory();
         $root->setPathname('')
             ->setName('');
@@ -34,7 +40,7 @@ class PopulateCommand extends ContainerAwareCommand
             $em->persist($root);
         }
 
-        $fileList = $this->getContainer()->get('opium.finder.photo')->find();
+        $fileList = $this->getContainer()->get('opium.finder.photo')->find($output);
 
         foreach ($fileList as $file) {
             if (!$repo->findOneByPathname($file->getPathname())) {
@@ -82,5 +88,19 @@ class PopulateCommand extends ContainerAwareCommand
         $parentPath = substr($path, 0, strrpos($path, '/', -2));
 
         return $parentPath;
+    }
+
+    public function truncateTables($tableNames = array(), $cascade = false) {
+        $em = $this->getContainer()->get('doctrine.orm.opium_entity_manager');
+        $connection = $em->getConnection();
+        $platform = $connection->getDatabasePlatform();
+        $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0;');
+        if (is_string($tableNames)) {
+            $tableNames = [$tableNames];
+        }
+        foreach ($tableNames as $name) {
+            $connection->executeUpdate($platform->getTruncateTableSQL($name, $cascade));
+        }
+        $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 1;');
     }
 }
