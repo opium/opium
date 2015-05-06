@@ -41,7 +41,10 @@ class FileTransformer
             foreach ($tmpExif as $key => $value) {
                 $exif[str_replace('exif:', '', $key)] = $value;
             }
-            $photo->setExif($exif);
+
+            if (!empty($exif)) {
+                $photo->setExif($exif);
+            }
         } catch (ImagickException $e) {
             ld($e, $file);
         }
