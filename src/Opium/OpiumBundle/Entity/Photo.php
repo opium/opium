@@ -107,15 +107,15 @@ class Photo extends File
      */
     private function positionFromExif($exif)
     {
-        if (empty($exif['exif:GPSLatitude']) || empty($exif['exif:GPSLatitudeRef'])
-            || empty($exif['exif:GPSLongitude']) || empty($exif['exif:GPSLongitudeRef'])) {
+        if (empty($exif['GPSLatitude']) || empty($exif['GPSLatitudeRef'])
+            || empty($exif['GPSLongitude']) || empty($exif['GPSLongitudeRef'])) {
                 return;
         }
 
-        $lat = explode(',', $exif['exif:GPSLatitude']);
-        $latRef = $exif['exif:GPSLatitudeRef'];
-        $lng = explode(',', $exif['exif:GPSLongitude']);
-        $lngRef = $exif['exif:GPSLongitudeRef'];
+        $lat = explode(',', $exif['GPSLatitude']);
+        $latRef = $exif['GPSLatitudeRef'];
+        $lng = explode(',', $exif['GPSLongitude']);
+        $lngRef = $exif['GPSLongitudeRef'];
 
         return [
             'lat' => $this->toDecimal(trim($lat[0]), trim($lat[1]), trim($lat[2]), $latRef),
