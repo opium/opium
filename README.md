@@ -12,6 +12,11 @@ The project is still in early stage of development. Any idea / contribution is w
 ## Installation
 Easy installation instruction soon.
 
+## Photo indexations
+```sh
+php app/console opium:populate
+```
+
 ## Hacking
 clone the project
 ```sh
