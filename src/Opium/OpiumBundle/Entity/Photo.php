@@ -13,37 +13,20 @@ use Hateoas\Configuration\Annotation as Hateoas;
 class Photo extends File
 {
     /**
-     * image
+     * exif
      *
-     * @var mixed
+     * @var array
      * @access private
      */
-    private $image;
-
     private $exif;
 
     /**
-     * Gets the value of image
+     * displayable
      *
-     * @return mixed
+     * @var boolean
+     * @access private
      */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * Sets the value of image
-     *
-     * @param mixed $image image
-     *
-     * @return Photo
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-        return $this;
-    }
+    private $displayable = false;
 
     /**
      * {@inheritdoc}
@@ -51,6 +34,29 @@ class Photo extends File
     public function getType()
     {
         return 'file';
+    }
+
+    /**
+     * Getter for displayable
+     *
+     * return boolean
+     */
+    public function getDisplayable()
+    {
+        return $this->displayable;
+    }
+
+    /**
+     * Setter for displayable
+     *
+     * @param boolean $displayable
+     * @return Photo
+     */
+    public function setDisplayable($displayable)
+    {
+        $this->displayable = $displayable;
+
+        return $this;
     }
 
     /**

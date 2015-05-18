@@ -3,6 +3,10 @@ Opium\OpiumBundle\Entity\Photo:
     extends: File
 
     fields:
+        displayable:
+            type: boolean
+            nullable: false
+
         exif:
             type: json_array
             nullable: true

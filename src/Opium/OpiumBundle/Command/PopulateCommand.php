@@ -68,7 +68,7 @@ class PopulateCommand extends ContainerAwareCommand
         // update photo
         $dirList = $dirRepo->findAll();
         foreach ($dirList as $dir) {
-            $photo = $photoRepo->findOneByParent($dir);
+            $photo = $photoRepo->findOneBy(['parent' => $dir, 'displayable' => true]);
             if ($photo) {
                 $dir->setDirectoryThumbnail($photo);
             }
