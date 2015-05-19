@@ -7,6 +7,16 @@
 #        photo: "[^/]+"
 #        _method: GET
 
+opium_options:
+    methods: [OPTIONS]
+    path: /{anything}
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: '::empty.html.twig'
+    requirements:
+        anything: ".*"
+
+
 api.directories:
     type: rest
     resource: "OpiumBundle:Directory"
