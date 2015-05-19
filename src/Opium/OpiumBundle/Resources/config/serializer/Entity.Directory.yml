@@ -15,6 +15,7 @@ Opium\OpiumBundle\Entity\Directory:
             rel: self
             href:
                 route: "opium_api_get_directory"
+                absolute: true
                 parameters: 
                     path: "expr(object.getId())"
             exclusion:
@@ -24,6 +25,7 @@ Opium\OpiumBundle\Entity\Directory:
             rel: self
             href:
                 route: "opium_api_get_directories"
+                absolute: true
             exclusion:
                 exclude_if: "expr(!object.getName())"
 

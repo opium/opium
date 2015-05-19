@@ -16,6 +16,7 @@ Opium\OpiumBundle\Entity\Photo:
             rel: self
             href:
                 route: opium_api_get_file
+                absolute: true
                 parameters:
                     slug: "expr(object.getSlug())"
 
@@ -23,6 +24,7 @@ Opium\OpiumBundle\Entity\Photo:
             rel: original
             href:
                 route: basefile
+                absolute: true
                 parameters:
                     slug: "expr(object.getSlug())"
 

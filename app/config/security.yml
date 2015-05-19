@@ -11,6 +11,7 @@ security:
 
         default:
             pattern: ^/
+            anonymous: false
             http_basic:
                 realm: "Opium secured area"
 

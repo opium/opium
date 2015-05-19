@@ -34,12 +34,14 @@ class ThumbnailSerializer
         $thumbnails = [
             'square-200x200' => $this->router->generate(
                 'image_crop',
-                [ 'slug' => $photo->getSlug(), 'width' => 200, 'height' => 200 ]
+                [ 'slug' => $photo->getSlug(), 'width' => 200, 'height' => 200 ],
+                true
             ),
 
             'banner-1170x400' => $this->router->generate(
                 'image_crop',
-                [ 'slug' => $photo->getSlug(), 'width' => 1170, 'height' => 400 ]
+                [ 'slug' => $photo->getSlug(), 'width' => 1170, 'height' => 400 ],
+                true
             ),
         ];
 
