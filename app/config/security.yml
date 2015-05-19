@@ -1,7 +1,8 @@
 security:
     providers:
         in_memory:
-            memory: ~
+            memory: 
+                users: %users%
 
     firewalls:
         dev:
@@ -9,4 +10,9 @@ security:
             security: false
 
         default:
-            anonymous: ~
+            pattern: ^/
+            http_basic:
+                realm: "Opium secured area"
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext

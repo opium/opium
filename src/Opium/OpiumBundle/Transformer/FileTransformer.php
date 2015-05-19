@@ -13,6 +13,25 @@ use Opium\OpiumBundle\Entity\Photo;
 class FileTransformer
 {
     /**
+     * allowedMimeTypes
+     *
+     * @var array
+     * @access private
+     */
+    private $allowedMimeTypes;
+
+    /**
+     * __construct
+     *
+     * @param array $allowedMimeTypes
+     * @access public
+     */
+    public function __construct(array $allowedMimeTypes)
+    {
+        $this->allowedMimeTypes = $allowedMimeTypes;
+    }
+
+    /**
      * transform
      *
      * @param SplFileInfo $file
@@ -37,8 +56,7 @@ class FileTransformer
         try {
             $imagick = new Imagick($file->getRealPath());
 
-            $imageFormat = strtolower($imagick->getImageFormat());
-            if (in_array($imageFormat, ['gif', 'jpg', 'jpeg', 'png', 'bmp'])) {
+            if (in_array($imagick->getImageMimeType(), $this->allowedMimeTypes)) {
                 $photo->setDisplayable(true);
             }
 

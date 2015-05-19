@@ -19,3 +19,8 @@ parameters:
     allowed_mime_types: 
         - "image/jpeg"
         - "image/png"
+        - "image/gif"
+        - "image/bmp"
+
+    users:
+        test: { password: 'test' }
