@@ -13,6 +13,8 @@ opium_options:
     defaults:
         _controller: FrameworkBundle:Template:template
         template: '::empty.html.twig'
+        maxAge: 86400
+        sharedMaxAge: 86400
     requirements:
         anything: ".*"
 
