@@ -11,3 +11,11 @@ Opium\OpiumBundle\Entity\Photo:
             type: json_array
             nullable: true
 
+        latitude:
+            type: float
+            nullable: true
+
+        longitude:
+            type: float
+            nullable: true
+

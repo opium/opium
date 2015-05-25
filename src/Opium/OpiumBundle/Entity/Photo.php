@@ -21,6 +21,22 @@ class Photo extends File
     private $exif;
 
     /**
+     * latitude
+     *
+     * @var float
+     * @access private
+     */
+    private $latitude;
+
+    /**
+     * longitude
+     *
+     * @var float
+     * @access private
+     */
+    private $longitude;
+
+    /**
      * displayable
      *
      * @var boolean
@@ -78,7 +94,60 @@ class Photo extends File
      */
     public function getPosition()
     {
+        if ($this->latitude !== null && $this->longitude !== null) {
+            return [
+                'lat' => $this->latitude,
+                'lng' => $this->longitude,
+            ];
+        }
+
         return $this->positionFromExif($this->exif);
+    }
+
+    /**
+     * Getter for latitude
+     *
+     * return float
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * Setter for latitude
+     *
+     * @param float $latitude
+     * @return Photo
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = (float) $latitude;
+
+        return $this;
+    }
+
+    /**
+     * Getter for longitude
+     *
+     * return float
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * Setter for longitude
+     *
+     * @param float $longitude
+     * @return Photo
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = (float) $longitude;
+
+        return $this;
     }
 
     /**
