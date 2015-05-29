@@ -29,7 +29,8 @@
         "nelmio/api-doc-bundle": "~2.7",
         "willdurand/hateoas-bundle": "~0.4",
 
-        "stojg/crop": "1.*"
+        "stojg/crop": "1.*",
+        "nelmio/cors-bundle": "^1.4"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

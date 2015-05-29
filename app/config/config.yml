@@ -57,6 +57,14 @@ fos_rest:
 
 nelmio_api_doc: ~
 
+nelmio_cors: 
+    paths:
+        #'^/v[1-9][0-9]?/':
+        '^/':
+            allow_origin: ['*']
+            allow_headers: ["X-Requested-With", "Content-Type", "Origin", "Authorization", "Accept", "client-security-token"]
+            allow_methods: ["POST", "GET", "OPTIONS", "DELETE", "PUT"]
+
 doctrine:
     dbal:
         connections:
