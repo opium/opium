@@ -4,6 +4,7 @@ namespace Opium\OpiumBundle\Serializer;
 
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ThumbnailSerializer
 {
@@ -16,20 +17,32 @@ class ThumbnailSerializer
     private $router;
 
     /**
+     * requestStack
+     *
+     * @var RequestStack
+     * @access private
+     */
+    private $requestStack;
+
+    /**
      * __construct
      *
      * @param RouterInterface $router
+     * @param RequestStack $requestStack
      * @access public
      */
-    public function __construct(RouterInterface $router)
+    public function __construct(RouterInterface $router, RequestStack $requestStack)
     {
         $this->router = $router;
+        $this->requestStack = $requestStack;
     }
 
     public function onSerializerPostSerialize(ObjectEvent $event)
     {
-        //ldd($event->getVisitor(), $event->getVisitor()->getNavigator());
         $photo = $event->getObject();
+
+        $width = $this->requestStack->getMasterRequest()->headers->get('X-Device-Width', 1170);
+        $height = 200;
 
         $thumbnails = [
             'square-200x200' => $this->router->generate(
@@ -38,9 +51,9 @@ class ThumbnailSerializer
                 true
             ),
 
-            'banner-1170x400' => $this->router->generate(
+            'banner' => $this->router->generate(
                 'image_crop',
-                [ 'slug' => $photo->getSlug(), 'width' => 1170, 'height' => 400 ],
+                [ 'slug' => $photo->getSlug(), 'width' => $width, 'height' => $height ],
                 true
             ),
         ];
