@@ -3,6 +3,7 @@
 namespace Opium\OpiumBundle\Entity;
 
 use Hateoas\Configuration\Annotation as Hateoas;
+use Opium\Component\Layout\RectangleInterface;
 
 /**
  * Photo
@@ -10,7 +11,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * @uses File
  * @author Julien Deniau <julien.deniau@mapado.com>
  */
-class Photo extends File
+class Photo extends File implements RectangleInterface
 {
     /**
      * exif
@@ -172,6 +173,28 @@ class Photo extends File
     {
         $this->exif = $exif;
         return $this;
+    }
+
+    /**
+     * getWidth
+     *
+     * @access public
+     * @return int
+     */
+    public function getWidth()
+    {
+        return (int) $this->getExif()['ExifImageWidth'];
+    }
+
+    /**
+     * getHeight
+     *
+     * @access public
+     * @return int
+     */
+    public function getHeight()
+    {
+        return (int) $this->getExif()['ExifImageHeight'];
     }
 
     /**
