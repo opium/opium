@@ -60,6 +60,11 @@ class FileTransformer
                 $photo->setDisplayable(true);
             }
 
+            // treat width & height
+            $geometry = $imagick->getImageGeometry();
+            $photo->setWidth($geometry['width'])
+                ->setHeight($geometry['height']);
+
             // treat Exif datas
             $tmpExif = $imagick->getImageProperties('exif:*');
             $exif = [];

@@ -2,11 +2,13 @@
 
 namespace Opium\Component\Layout;
 
+use JsonSerializable;
+
 /**
  * Class Rectangle
  * @author Julien Deniau <julien.deniau@mapado.com>
  */
-class Rectangle implements RectangleInterface
+class Rectangle implements RectangleInterface, JsonSerializable
 {
     /**
      * width
@@ -80,5 +82,13 @@ class Rectangle implements RectangleInterface
         $this->height = $height;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'width' => $this->getWidth(),
+            'height' => $this->getHeight(),
+        ];
     }
 }

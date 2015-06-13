@@ -12,6 +12,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PopulateCommand extends ContainerAwareCommand
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function configure()
     {
         $this
@@ -21,6 +24,9 @@ class PopulateCommand extends ContainerAwareCommand
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $em = $this->getContainer()->get('doctrine.orm.opium_entity_manager');
@@ -78,6 +84,13 @@ class PopulateCommand extends ContainerAwareCommand
 
     }
 
+    /**
+     * getParentPath
+     *
+     * @param File $file
+     * @access private
+     * @return string parent path
+     */
     private function getParentPath(File $file)
     {
         $path = $file->getPathname();
@@ -90,6 +103,14 @@ class PopulateCommand extends ContainerAwareCommand
         return $parentPath;
     }
 
+    /**
+     * truncateTables
+     *
+     * @param bool $tableNames
+     * @param bool $cascade
+     * @access public
+     * @return void
+     */
     public function truncateTables($tableNames = array(), $cascade = false) {
         $em = $this->getContainer()->get('doctrine.orm.opium_entity_manager');
         $connection = $em->getConnection();

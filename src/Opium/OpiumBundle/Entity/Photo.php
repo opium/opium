@@ -22,6 +22,22 @@ class Photo extends File implements RectangleInterface
     private $exif;
 
     /**
+     * width
+     *
+     * @var int
+     * @access private
+     */
+    private $width;
+
+    /**
+     * height
+     *
+     * @var int
+     * @access private
+     */
+    private $height;
+
+    /**
      * latitude
      *
      * @var float
@@ -176,25 +192,49 @@ class Photo extends File implements RectangleInterface
     }
 
     /**
-     * getWidth
+     * Getter for width
      *
-     * @access public
-     * @return int
+     * return int
      */
     public function getWidth()
     {
-        return (int) $this->getExif()['ExifImageWidth'];
+        return $this->width;
     }
 
     /**
-     * getHeight
+     * Setter for width
      *
-     * @access public
-     * @return int
+     * @param int $width
+     * @return Photo
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+
+        return $this;
+    }
+
+    /**
+     * Getter for height
+     *
+     * return int
      */
     public function getHeight()
     {
-        return (int) $this->getExif()['ExifImageHeight'];
+        return $this->height;
+    }
+
+    /**
+     * Setter for height
+     *
+     * @param int $height
+     * @return Photo
+     */
+    public function setHeight($height)
+    {
+        $this->height = $height;
+
+        return $this;
     }
 
     /**

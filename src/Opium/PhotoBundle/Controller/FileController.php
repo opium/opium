@@ -39,11 +39,11 @@ class FileController extends Controller
      *
      * @ParamConverter("photo", class="OpiumBundle:Photo", options={"slug" = "slug"})
      */
-    public function cropImageAction(Photo $photo, $width, $height)
+    public function cropImageAction(Photo $photo, $cropWidth, $cropHeight)
     {
         $path = $photo->getPathname();
 
-        $writePath = $this->getWritePath($photo, $width, $height);
+        $writePath = $this->getWritePath($photo, $cropWidth, $cropHeight);
         if (file_exists($writePath)) {
             return new BinaryFileResponse($writePath);
         }
@@ -55,7 +55,7 @@ class FileController extends Controller
 
         $crop = new \stojg\crop\CropEntropy();
         $crop->setImage($imagick);
-        $imagick = $crop->resizeAndCrop($width, $height);
+        $imagick = $crop->resizeAndCrop($cropWidth, $cropHeight);
         $imagick->writeImage($writePath);
 
         return new ImagickResponse($imagick, getimagesize($filepath)['mime']);

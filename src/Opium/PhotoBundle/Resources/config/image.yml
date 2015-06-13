@@ -1,5 +1,5 @@
 image_crop:
-    path:  "/{slug}/thumbs/{width}-{height}"
+    path:  "/{slug}/thumbs/{cropWidth}-{cropHeight}"
     defaults: 
         _controller: OpiumPhotoBundle:File:cropImage
     requirements:
