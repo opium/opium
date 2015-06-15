@@ -19,3 +19,11 @@ Opium\OpiumBundle\Entity\Photo:
             type: float
             nullable: true
 
+        width:
+            type: integer
+            nullable: false
+
+        height:
+            type: integer
+            nullable: false
+

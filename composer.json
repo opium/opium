@@ -33,7 +33,8 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
-        "raulfraile/ladybug-bundle": "@stable"
+        "raulfraile/ladybug-bundle": "@stable",
+        "atoum/atoum": "@stable"
     },
     "scripts": {
         "post-root-package-install": [

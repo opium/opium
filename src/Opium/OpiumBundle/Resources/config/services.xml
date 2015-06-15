@@ -37,10 +37,13 @@
             <argument>OpiumBundle:File</argument>
         </service>
 
+        <service id="opium.layout.line" class="Opium\Component\Layout\LineLayout" public="false" />
+
         <service id="opium.serializer_handler.thumbnails" class="Opium\OpiumBundle\Serializer\ThumbnailSerializer">
             <argument type="service" id="router" />
             <argument type="service" id="request_stack" />
-            <tag name="jms_serializer.event_listener" event="serializer.post_serialize" class="Opium\OpiumBundle\Entity\Photo" direction="serialization" />
+            <argument type="service" id="opium.layout.line" />
+            <tag name="jms_serializer.event_subscriber" direction="serialization" />
         </service>
     </services>
 </container>
