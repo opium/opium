@@ -37,9 +37,10 @@ class LineLayout
             }
         );
 
-        $height = ($maxWidth - $gutterWidth) / $ratioSum;
+        $height = ($maxWidth + $gutterWidth) / $ratioSum;
 
-        return $height;
+        // todo replace by intdiv in php 7
+        return intval($height);
     }
 
     /**
@@ -50,11 +51,11 @@ class LineLayout
      * @param int $maxHeight
      * @param int $gutterWidth
      * @access public
-     * @return SplObjectStorage<SplQueue<Rectangle>>
+     * @return SplQueue<SplQueue<Rectangle>>
      */
     public function computeRectangleList(Traversable $rectangleList, $maxWidth, $maxHeight, $gutterWidth = 0)
     {
-        $storage = new SplObjectStorage();
+        $storage = new SplQueue();
 
         $line = new SplQueue();
         foreach ($rectangleList as $rectangle) {
@@ -79,14 +80,15 @@ class LineLayout
     /**
      * computeLine
      *
-     * @param SplObjectStorage $storage
+     * @param SplQueue $storage
      * @param SplQueue $line
      * @param int $height
      * @access private
-     * @return SplObjectStorage
+     * @return SplQueue
      */
-    private function computeLine(SplObjectStorage $storage, SplQueue $line, $height)
+    private function computeLine(SplQueue $storage, SplQueue $line, $height)
     {
+        $outLine = new SplQueue();
         foreach ($line as $item) {
             if ($item instanceof RectangleInterface && $item->getHeight()) {
                 $width = $item->getWidth() * $height / $item->getHeight();
@@ -94,8 +96,9 @@ class LineLayout
                 $width = $height;
             }
             $geometry = new Rectangle($width, $height);
-            $storage->attach($item, $geometry);
+            $outLine->enqueue(['item' => $item, 'geometry' => $geometry]);
         }
+        $storage->enqueue($outLine);
 
         return $storage;
     }

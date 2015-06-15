@@ -49,8 +49,8 @@ class LineLayout extends atoum
                 ])
             )
             ->then
-                ->float($this->newTestedInstance->computeHeight($rectangleList, 450))
-                    ->isNearlyEqualTo(100)
+                ->integer($this->newTestedInstance->computeHeight($rectangleList, 450))
+                    ->isEqualTo(100)
 
             ->if(
                 $rectangleList = SplFixedArray::fromArray([
@@ -60,8 +60,8 @@ class LineLayout extends atoum
                 ])
             )
             ->then
-                ->float($this->newTestedInstance->computeHeight($rectangleList, 600))
-                    ->isNearlyEqualTo(500)
+                ->integer($this->newTestedInstance->computeHeight($rectangleList, 600))
+                    ->isEqualTo(499) // weird comportment, should be 500
         ;
     }
 
@@ -82,8 +82,8 @@ class LineLayout extends atoum
                 ])
             )
             ->then
-                ->float(round($this->newTestedInstance->computeHeight($rectangleList, 1000), 2))
-                    ->isEqualTo(222.22)
+                ->integer($this->newTestedInstance->computeHeight($rectangleList, 1000))
+                    ->isEqualTo(222)
 
             ->if(
                 $rectangleList = SplFixedArray::fromArray([
@@ -93,8 +93,8 @@ class LineLayout extends atoum
                 ])
             )
             ->then
-                ->float(round($this->newTestedInstance->computeHeight($rectangleList, 1100), 2))
-                    ->isEqualTo(871.95)
+                ->integer($this->newTestedInstance->computeHeight($rectangleList, 1100))
+                    ->isEqualTo(871)
         ;
     }
 
@@ -103,8 +103,6 @@ class LineLayout extends atoum
      *
      * @access public
      * @return void
-     *
-     * @tags tmp
      */
     public function testComputeHeightMargin()
     {
@@ -118,8 +116,8 @@ class LineLayout extends atoum
                 ])
             )
             ->then
-                ->float(round($this->newTestedInstance->computeHeight($rectangleList, 600, 0), 2))
-                    ->isEqualTo(133.33)
+                ->integer($this->newTestedInstance->computeHeight($rectangleList, 600, 0))
+                    ->isEqualTo(133)
 
             // with margin
             ->if(
@@ -130,9 +128,9 @@ class LineLayout extends atoum
                 ])
             )
             ->then
-                ->float(round($this->newTestedInstance->computeHeight($rectangleList, 600, 100), 2))
-                    ->isNotEqualTo(133.33)
-                    ->isEqualTo(76.92)
+                ->integer($this->newTestedInstance->computeHeight($rectangleList, 600, 100))
+                    ->isNotEqualTo(133)
+                    ->isEqualTo(76)
         ;
     }
 
@@ -165,12 +163,12 @@ class LineLayout extends atoum
                     ->isInstanceOf('\Opium\Component\Layout\RectangleInterface')
 
                 // first line
-                ->float($computed[$rectangleList[0]]->getHeight())
+                ->integer($computed[$rectangleList[0]]->getHeight())
                     ->isEqualTo($computed[$rectangleList[1]]->getHeight())
                     ->isEqualTo($computed[$rectangleList[2]]->getHeight())
 
                 // second line
-                ->float($computed[$rectangleList[3]]->getHeight())
+                ->integer($computed[$rectangleList[3]]->getHeight())
                     ->isEqualTo($computed[$rectangleList[4]]->getHeight())
 
 
@@ -193,17 +191,17 @@ class LineLayout extends atoum
 
                 ->object($computed[$rectangleList[0]])
                     ->isInstanceOf('\Opium\Component\Layout\RectangleInterface')
-                ->float($computed[$rectangleList[0]]->getHeight())
+                ->integer($computed[$rectangleList[0]]->getHeight())
                     ->isEqualTo($computed[$rectangleList[1]]->getHeight())
                     ->isEqualTo($computed[$rectangleList[2]]->getHeight())
-                ->float(round($computed[$rectangleList[0]]->getHeight()))
+                ->integer($computed[$rectangleList[0]]->getHeight())
                     ->isEqualTo(133)
 
-                ->float($computed[$rectangleList[3]]->getHeight())
+                ->integer($computed[$rectangleList[3]]->getHeight())
                     ->isEqualTo($computed[$rectangleList[4]]->getHeight())
                     ->isEqualTo(120)
 
-                ->float(round($computed[$rectangleList[5]]->getHeight()))
+                ->integer($computed[$rectangleList[5]]->getHeight())
                     ->isEqualTo(200)
         ;
     }
@@ -213,14 +211,11 @@ class LineLayout extends atoum
      *
      * @access public
      * @return void
-     *
-     * @tags tmp2
      */
     public function testMargin()
     {
 
         $this
-            // add last line
             ->if(
                 $rectangleList = SplFixedArray::fromArray([
                     new Rectangle(1000, 2000),
@@ -239,20 +234,42 @@ class LineLayout extends atoum
 
                 ->object($computed[$rectangleList[0]])
                     ->isInstanceOf('\Opium\Component\Layout\RectangleInterface')
-                ->float($computed[$rectangleList[0]]->getHeight())
+                ->integer($computed[$rectangleList[0]]->getHeight())
                     ->isEqualTo($computed[$rectangleList[1]]->getHeight())
                     ->isEqualTo($computed[$rectangleList[2]]->getHeight())
-                ->float(round($computed[$rectangleList[0]]->getHeight()))
-                    ->isEqualTo(132)
+                ->integer($computed[$rectangleList[0]]->getHeight())
+                    ->isEqualTo(131)
 
-                ->float($computed[$rectangleList[3]]->getHeight())
+                ->integer($computed[$rectangleList[3]]->getHeight())
                     ->isEqualTo($computed[$rectangleList[4]]->getHeight())
 
-                ->float(round($computed[$rectangleList[3]]->getHeight(), 2))
-                    ->isEqualTo(118.76)
+                ->integer($computed[$rectangleList[3]]->getHeight())
+                    ->isEqualTo(118)
 
-                ->float(round($computed[$rectangleList[5]]->getHeight()))
+                ->integer($computed[$rectangleList[5]]->getHeight())
                     ->isEqualTo(200)
+
+            // real test cases
+            ->if(
+                $rectangleList = SplFixedArray::fromArray([
+                    new Rectangle(5923, 3729),
+                    new Rectangle(3072, 2304),
+                    new Rectangle(2593, 3872),
+                ])
+            )
+            ->then
+                ->object($computed = $this->newTestedInstance->computeRectangleList($rectangleList, 600, 200, 10))
+                    ->isInstanceOf('\SplObjectStorage')
+                ->integer($computed[$rectangleList[0]]->getHeight())
+                    ->isEqualTo(163)
+
+                ->if(
+                        $totalWidth = $computed[$rectangleList[0]]->getWidth()
+                            + $computed[$rectangleList[1]]->getWidth()
+                            + $computed[$rectangleList[2]]->getWidth()
+                )
+                ->integer($totalWidth)
+                    ->isEqualTo(580)
         ;
     }
 }

@@ -93,29 +93,39 @@ class ThumbnailSerializer implements EventSubscriberInterface
         $width = 600;
 
         $lines = $this->lineLayout->computeRectangleList($directory->getChildren(), $width, 200, $gutter);
-        $sizes = [];
+        $outLines = [];
         if ($event->getContext()->getDepth() == 0) {
-            foreach ($lines as $item) {
-                if ($item instanceof Directory) {
-                    $slug = $item->getDirectoryThumbnail() ? $item->getDirectoryThumbnail()->getSlug() : null;
-                } else {
-                    $slug = $item->getSlug();
-                }
+            foreach ($lines as $key => $line) {
+                $outLines[$key] = [];
 
-                if ($slug) {
-                    $sizes[$item->getId()] = $this->router->generate(
-                        'image_crop',
-                        [
-                            'slug' => $slug,
-                                'cropWidth' => $lines[$item]->getWidth(),
-                                'cropHeight' => $lines[$item]->getHeight()
-                        ],
-                        true
-                    );
+                foreach ($line as $itemContainer) {
+                    $item = $itemContainer['item'];
+                    $geometry = $itemContainer['geometry'];
+
+                    if ($item instanceof Directory) {
+                        $slug = $item->getDirectoryThumbnail() ? $item->getDirectoryThumbnail()->getSlug() : null;
+                    } else {
+                        $slug = $item->getSlug();
+                    }
+
+                    //$outLines[$key][$item->getId()]['item'] = $item;
+                    $outLines[$key][$item->getId()]['geometry'] = $geometry;
+
+                    if ($slug) {
+                        $outLines[$key][$item->getId()]['thumbs'] = $this->router->generate(
+                            'image_crop',
+                            [
+                                'slug' => $slug,
+                                    'cropWidth' => $geometry->getWidth(),
+                                    'cropHeight' => $geometry->getHeight()
+                            ],
+                            true
+                        );
+                    }
                 }
             }
 
-            $event->getVisitor()->addData('images_link', $sizes);
+            $event->getVisitor()->addData('image_lines', $outLines);
         }
     }
 
