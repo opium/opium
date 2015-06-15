@@ -90,7 +90,6 @@ class ThumbnailSerializer implements EventSubscriberInterface
 
         $width = $request->headers->get('X-Device-Width', 1170);
         $gutter = $request->query->get('gutter', 0);
-        $width = 600;
 
         $lines = $this->lineLayout->computeRectangleList($directory->getChildren(), $width, 200, $gutter);
         $outLines = [];
@@ -108,7 +107,6 @@ class ThumbnailSerializer implements EventSubscriberInterface
                         $slug = $item->getSlug();
                     }
 
-                    //$outLines[$key][$item->getId()]['item'] = $item;
                     $outLines[$key][$item->getId()]['geometry'] = $geometry;
 
                     if ($slug) {
@@ -143,12 +141,6 @@ class ThumbnailSerializer implements EventSubscriberInterface
         $height = 200;
 
         $thumbnails = [
-            'square-200x200' => $this->router->generate(
-                'image_crop',
-                [ 'slug' => $photo->getSlug(), 'cropWidth' => 200, 'cropHeight' => 200 ],
-                true
-            ),
-
             'banner' => $this->router->generate(
                 'image_crop',
                 [ 'slug' => $photo->getSlug(), 'cropWidth' => $width, 'cropHeight' => $height ],

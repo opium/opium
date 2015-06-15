@@ -26,9 +26,9 @@ class LineLayout
     {
         $ratioSum = $this->reduceIterator(
             $rectangleList,
-            function ($carry, $item) use ($gutterWidth) {
+            function ($carry, $item) {
                 if ($item instanceof RectangleInterface && $item->getHeight()) {
-                    $carry += ($item->getWidth() + $gutterWidth) / $item->getHeight();
+                    $carry += $item->getWidth()  / $item->getHeight();
                 } else {
                     $carry += 1;
                 }
@@ -37,7 +37,9 @@ class LineLayout
             }
         );
 
-        $height = ($maxWidth + $gutterWidth) / $ratioSum;
+        $gutterTotal = $gutterWidth * count($rectangleList);
+
+        $height = ($maxWidth - $gutterTotal) / $ratioSum;
 
         // todo replace by intdiv in php 7
         return intval($height);
