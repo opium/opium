@@ -6,6 +6,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Finder\SplFileInfo;
 
 class DirectoryController extends FOSRestController
 {
@@ -70,6 +71,50 @@ class DirectoryController extends FOSRestController
         //$em->merge($directory);
         $em->flush();
         return $directory;
+    }
+
+    /**
+     * uploadDirectoryAction
+     *
+     * @param mixed $path
+     * @access public
+     * @return void
+     *
+     * @ApiDoc(description="Upload a file to a directory")
+     * @Rest\View(serializerEnableMaxDepthChecks=true)
+     * @Rest\Post("directories/{path}/upload")
+     */
+    public function uploadDirectoryAction($path, Request $request)
+    {
+        $dir = $this->get('opium.repository.directory')->findOneBySlug($path);
+        $uploadedFile = $request->files->get('file');
+
+        if ($uploadedFile) {
+            $originalName = $uploadedFile->getClientOriginalName();
+            $photoDir = $this->getParameter('photos_directory');
+            $pathname = $dir->getPathname() . '/' . $originalName;
+            $tmpFile = $uploadedFile->move($photoDir . $dir->getPathname(), $originalName);
+
+            $file = new SplFileInfo($tmpFile->getRealPath(), $photoDir, $pathname);
+
+
+            $entity = $this->get('opium.transformer.file')->transformToFile($file);
+
+            $repo = $this->get('opium.repository.file');
+            $em = $this->get('doctrine.orm.opium_entity_manager');
+
+            if ($existingFile = $repo->findOneByPathname($entity->getPathname())) {
+                $em->remove($existingFile);
+            }
+
+            // parent
+            $entity->setParent($dir);
+
+            $em->persist($entity);
+            $em->flush();
+
+            return $entity;
+        }
     }
 
     /**

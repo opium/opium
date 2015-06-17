@@ -18,7 +18,6 @@ opium_options:
     requirements:
         anything: ".*"
 
-
 api.directories:
     type: rest
     resource: "OpiumBundle:Directory"
