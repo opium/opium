@@ -4,6 +4,7 @@ namespace Opium\OpiumBundle\Command;
 
 use Opium\OpiumBundle\Entity\Directory;
 use Opium\OpiumBundle\Entity\File;
+use Opium\OpiumBundle\Entity\Photo;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -49,9 +50,22 @@ class PopulateCommand extends ContainerAwareCommand
         $fileList = $this->getContainer()->get('opium.finder.photo')->find($output);
 
         foreach ($fileList as $file) {
-            if (!$repo->findOneByPathname($file->getPathname())) {
-                $em->persist($file);
+            $entity = $repo->findOneByPathname($file->getPathname());
+            if ($entity) {
+                if ($file instanceof Directory) {
+                    $entity->setDirectoryThumbnail($file->getDirectoryThumbnail());
+                } elseif ($file instanceof Photo) {
+                    $entity->setExif($file->getExif())
+                        ->setWidth($file->getWidth())
+                        ->setHeight($file->getHeight())
+                        ;
+                }
+
+            } else {
+                $entity = $file;
             }
+
+            $em->persist($entity);
         }
 
         $em->flush();
