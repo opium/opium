@@ -74,6 +74,21 @@ class DirectoryController extends FOSRestController
     }
 
     /**
+     * uploadRootDirectoryAction
+     *
+     * @access public
+     * @return void
+     *
+     * @ApiDoc(description="Upload a file to a directory")
+     * @Rest\View(serializerEnableMaxDepthChecks=true)
+     * @Rest\Post("directories/upload")
+     */
+    public function uploadRootDirectoryAction(Request $request)
+    {
+        return $this->uploadDirectoryAction('', $request);
+    }
+
+    /**
      * uploadDirectoryAction
      *
      * @param mixed $path
