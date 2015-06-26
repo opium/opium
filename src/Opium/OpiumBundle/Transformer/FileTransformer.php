@@ -62,8 +62,17 @@ class FileTransformer
 
             // treat width & height
             $geometry = $imagick->getImageGeometry();
-            $photo->setWidth($geometry['width'])
-                ->setHeight($geometry['height']);
+
+            if (in_array(
+                $imagick->getImageOrientation(),
+                [Imagick::ORIENTATION_RIGHTTOP, Imagick::ORIENTATION_LEFTBOTTOM]
+            )) {
+                $photo->setWidth($geometry['height'])
+                    ->setHeight($geometry['width']);
+            } else {
+                $photo->setWidth($geometry['width'])
+                    ->setHeight($geometry['height']);
+            }
 
             // treat Exif datas
             $tmpExif = $imagick->getImageProperties('exif:*');

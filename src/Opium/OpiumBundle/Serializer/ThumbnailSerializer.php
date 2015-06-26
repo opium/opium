@@ -146,22 +146,31 @@ class ThumbnailSerializer implements EventSubscriberInterface
                 [ 'slug' => $photo->getSlug(), 'cropWidth' => $width, 'cropHeight' => $height ],
                 true
             ),
+            'image' => $this->router->generate(
+                'image_crop',
+                [
+                    'slug' => $photo->getSlug(),
+                    'cropWidth' => $width,
+                    'cropHeight' => 'auto',
+                ],
+                true
+            )
         ];
 
         $event->getVisitor()->addData('thumbnails', $thumbnails);
     }
 
-     /**
-      * getSubscribedEvents
-      *
-      * @static
-      * @access public
-      * @return void
-      */
-     public static function getSubscribedEvents()
-     {
-         return array(
-             array('event' => 'serializer.post_serialize', 'method' => 'onSerializerPostSerialize'),
-         );
-     }
+    /**
+     * getSubscribedEvents
+     *
+     * @static
+     * @access public
+     * @return void
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(
+            array('event' => 'serializer.post_serialize', 'method' => 'onSerializerPostSerialize'),
+        );
+    }
 }

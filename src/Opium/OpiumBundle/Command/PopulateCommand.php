@@ -52,20 +52,14 @@ class PopulateCommand extends ContainerAwareCommand
         foreach ($fileList as $file) {
             $entity = $repo->findOneByPathname($file->getPathname());
             if ($entity) {
-                if ($file instanceof Directory) {
+                if ($file instanceof Directory && $file->getDirectoryThumbnail()) {
                     $entity->setDirectoryThumbnail($file->getDirectoryThumbnail());
-                } elseif ($file instanceof Photo) {
-                    $entity->setExif($file->getExif())
-                        ->setWidth($file->getWidth())
-                        ->setHeight($file->getHeight())
-                        ;
                 }
 
             } else {
                 $entity = $file;
+                $em->persist($entity);
             }
-
-            $em->persist($entity);
         }
 
         $em->flush();
@@ -125,7 +119,8 @@ class PopulateCommand extends ContainerAwareCommand
      * @access public
      * @return void
      */
-    public function truncateTables($tableNames = array(), $cascade = false) {
+    public function truncateTables($tableNames = array(), $cascade = false)
+    {
         $em = $this->getContainer()->get('doctrine.orm.opium_entity_manager');
         $connection = $em->getConnection();
         $platform = $connection->getDatabasePlatform();
