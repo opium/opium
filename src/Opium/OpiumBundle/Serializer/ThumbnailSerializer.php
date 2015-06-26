@@ -146,6 +146,11 @@ class ThumbnailSerializer implements EventSubscriberInterface
                 [ 'slug' => $photo->getSlug(), 'cropWidth' => $width, 'cropHeight' => $height ],
                 true
             ),
+            'smallSquare' => $this->router->generate(
+                'image_crop',
+                [ 'slug' => $photo->getSlug(), 'cropWidth' => 50, 'cropHeight' => 50 ],
+                true
+            ),
             'image' => $this->router->generate(
                 'image_crop',
                 [
