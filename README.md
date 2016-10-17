@@ -5,7 +5,7 @@ Open-source Photo Gallery
 
 ## Demo
 
-[See Demo](http://demo.opium.sitioweb.fr/)
+[See Demo](http://opium.github.io/)
 
 The project is still in early stage of development. Any idea / contribution is welcome.
 
