@@ -114,8 +114,8 @@ class ThumbnailSerializer implements EventSubscriberInterface
                             'image_crop',
                             [
                                 'slug' => $slug,
-                                    'cropWidth' => $geometry->getWidth(),
-                                    'cropHeight' => $geometry->getHeight()
+                                'cropWidth' => $geometry->getWidth(),
+                                'cropHeight' => $geometry->getHeight(),
                             ],
                             true
                         );

@@ -28,3 +28,13 @@ Opium\OpiumBundle\Entity\Photo:
                 parameters:
                     slug: "expr(object.getSlug())"
 
+        -
+            rel: cropTemplate
+            href:
+                route: image_crop
+                absolute: true
+                parameters:
+                    slug: "expr(object.getSlug())"
+                    cropWidth: "{cropWidth}"
+                    cropHeight: "{cropHeight}"
+
