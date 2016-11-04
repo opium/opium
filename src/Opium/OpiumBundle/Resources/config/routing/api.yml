@@ -28,6 +28,11 @@ api.files:
     resource: "OpiumBundle:File"
     name_prefix: opium_api_
 
+api.users:
+    type: rest
+    resource: "OpiumBundle:User"
+    name_prefix: opium_api_
+
 #opium_directory_update:
 #    path:  "/{path}/"
 #    defaults: 

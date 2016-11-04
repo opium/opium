@@ -23,4 +23,10 @@ parameters:
         - "image/bmp"
 
     users:
-        test: { password: 'test' }
+        test: 
+            password: "$2y$14$VU4uDVfoI3d97/RZLJbgneGI.By/Vcymng2WbufZatF6h6ix2wSC2" = "test"
+            role: "ROLE_USER"
+        admin: 
+            password: "$2y$14$FxVQthM2GX1SA7vYM1IRKOpC3qypP6aj.aHBCHmlq7v.pyHXUo2qm" # = admin
+            role: "ROLE_USER"
+

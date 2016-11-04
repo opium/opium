@@ -4,6 +4,9 @@ security:
             memory: 
                 users: %users%
 
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -11,13 +14,15 @@ security:
 
         default:
             pattern: ^/v[1-9][0-9]?/
-            anonymous: true
+            anonymous: false
             http_basic:
                 realm: "Opium secured area"
 
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
+        Symfony\Component\Security\Core\User\User: 
+            algorithm: "bcrypt"
+            cost: 14
 
     access_control:
         - { methods: OPTIONS, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { role: IS_AUTHENTICATED_FULLY }
+        - { role: ROLE_USER }
