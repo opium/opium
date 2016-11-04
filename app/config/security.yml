@@ -12,6 +12,11 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        options:
+            pattern: ^/v[1-9][0-9]?/
+            anonymous: true
+            methods: [ OPTIONS ]
+
         default:
             pattern: ^/v[1-9][0-9]?/
             anonymous: false
