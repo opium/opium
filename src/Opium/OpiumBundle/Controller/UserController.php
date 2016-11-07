@@ -27,6 +27,7 @@ class UserController extends FOSRestController
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
         $data = [
+            'type' => 'user',
             'username' => $user->getUsername(),
             'roles' => $user->getRoles(),
         ];
