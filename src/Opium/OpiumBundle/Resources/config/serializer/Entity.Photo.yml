@@ -5,6 +5,10 @@ Opium\OpiumBundle\Entity\Photo:
             type: array
         exif:
             type: array
+        width:
+            type: integer
+        height:
+            type: integer
 
     virtual_properties:
         getPosition:
