@@ -1,12 +1,12 @@
 Opium\OpiumBundle\Entity\Directory:
     exclusion_policy: all
-    properties:
+    virtual_properties:
         #directoryThumbnail:
         #    expose: true
         #    type: Opium\OpiumBundle\Entity\Photo
 
-        children:
-            expose: true
+        getDisplayableChildren:
+            serialized_name: "children"
             type: array
             max_depth: 1
 

@@ -85,4 +85,16 @@ class Directory extends File
         $this->children = $children;
         return $this;
     }
+
+    public function getDisplayableChildren()
+    {
+        $out = [];
+        foreach ($this->children as $children) {
+            if (!$children instanceof Photo || $children->getDisplayable()) {
+                $out[] = $children;
+            }
+        }
+
+        return $out;
+    }
 }
