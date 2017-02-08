@@ -130,7 +130,7 @@ class LineLayout extends atoum
             ->then
                 ->integer($this->newTestedInstance->computeHeight($rectangleList, 600, 100))
                     ->isNotEqualTo(133)
-                    ->isEqualTo(76)
+                    ->isEqualTo(66)
         ;
     }
 
@@ -155,21 +155,22 @@ class LineLayout extends atoum
             )
             ->then
                 ->object($computed = $this->newTestedInstance->computeRectangleList($rectangleList, 600, 200))
-                    ->isInstanceOf('\SplObjectStorage')
+                    // ->then(ldd(iterator_to_array($computed)))
+                    // ->isInstanceOf('\SplObjectStorage')
                 ->integer(count($computed))
-                    ->isEqualTo(5)
+                    ->isEqualTo(2)
 
-                ->object($computed[$rectangleList[0]])
+                ->object($computed[0][0]['geometry'])
                     ->isInstanceOf('\Opium\Component\Layout\RectangleInterface')
 
                 // first line
-                ->integer($computed[$rectangleList[0]]->getHeight())
-                    ->isEqualTo($computed[$rectangleList[1]]->getHeight())
-                    ->isEqualTo($computed[$rectangleList[2]]->getHeight())
+                ->integer($computed[0][0]['geometry']->getHeight())
+                    ->isEqualTo($computed[0][1]['geometry']->getHeight())
+                    ->isEqualTo($computed[0][2]['geometry']->getHeight())
 
                 // second line
-                ->integer($computed[$rectangleList[3]]->getHeight())
-                    ->isEqualTo($computed[$rectangleList[4]]->getHeight())
+                ->integer($computed[1][0]['geometry']->getHeight())
+                    ->isEqualTo($computed[1][1]['geometry']->getHeight())
 
 
             // add last line
@@ -185,23 +186,23 @@ class LineLayout extends atoum
             )
             ->then
                 ->object($computed = $this->newTestedInstance->computeRectangleList($rectangleList, 600, 200))
-                    ->isInstanceOf('\SplObjectStorage')
+                    ->isInstanceOf('\SplQueue')
                 ->integer(count($computed))
-                    ->isEqualTo(6)
+                    ->isEqualTo(3)
 
-                ->object($computed[$rectangleList[0]])
+                ->object($computed[0][0]['geometry'])
                     ->isInstanceOf('\Opium\Component\Layout\RectangleInterface')
-                ->integer($computed[$rectangleList[0]]->getHeight())
-                    ->isEqualTo($computed[$rectangleList[1]]->getHeight())
-                    ->isEqualTo($computed[$rectangleList[2]]->getHeight())
-                ->integer($computed[$rectangleList[0]]->getHeight())
+                ->integer($computed[0][0]['geometry']->getHeight())
+                    ->isEqualTo($computed[0][1]['geometry']->getHeight())
+                    ->isEqualTo($computed[0][2]['geometry']->getHeight())
+                ->integer($computed[0][0]['geometry']->getHeight())
                     ->isEqualTo(133)
 
-                ->integer($computed[$rectangleList[3]]->getHeight())
-                    ->isEqualTo($computed[$rectangleList[4]]->getHeight())
+                ->integer($computed[1][0]['geometry']->getHeight())
+                    ->isEqualTo($computed[1][1]['geometry']->getHeight())
                     ->isEqualTo(120)
 
-                ->integer($computed[$rectangleList[5]]->getHeight())
+                ->integer($computed[2][0]['geometry']->getHeight())
                     ->isEqualTo(200)
         ;
     }
@@ -228,25 +229,25 @@ class LineLayout extends atoum
             )
             ->then
                 ->object($computed = $this->newTestedInstance->computeRectangleList($rectangleList, 600, 200, 5))
-                    ->isInstanceOf('\SplObjectStorage')
+                    ->isInstanceOf('\SplQueue')
                 ->integer(count($computed))
-                    ->isEqualTo(6)
+                    ->isEqualTo(3)
 
-                ->object($computed[$rectangleList[0]])
+                ->object($computed[0][0]['geometry'])
                     ->isInstanceOf('\Opium\Component\Layout\RectangleInterface')
-                ->integer($computed[$rectangleList[0]]->getHeight())
-                    ->isEqualTo($computed[$rectangleList[1]]->getHeight())
-                    ->isEqualTo($computed[$rectangleList[2]]->getHeight())
-                ->integer($computed[$rectangleList[0]]->getHeight())
-                    ->isEqualTo(131)
+                ->integer($computed[0][0]['geometry']->getHeight())
+                    ->isEqualTo($computed[0][1]['geometry']->getHeight())
+                    ->isEqualTo($computed[0][2]['geometry']->getHeight())
+                ->integer($computed[0][0]['geometry']->getHeight())
+                    ->isEqualTo(130)
 
-                ->integer($computed[$rectangleList[3]]->getHeight())
-                    ->isEqualTo($computed[$rectangleList[4]]->getHeight())
+                ->integer($computed[1][0]['geometry']->getHeight())
+                    ->isEqualTo($computed[1][1]['geometry']->getHeight())
 
-                ->integer($computed[$rectangleList[3]]->getHeight())
+                ->integer($computed[1][0]['geometry']->getHeight())
                     ->isEqualTo(118)
 
-                ->integer($computed[$rectangleList[5]]->getHeight())
+                ->integer($computed[2][0]['geometry']->getHeight())
                     ->isEqualTo(200)
 
             // real test cases
@@ -259,17 +260,18 @@ class LineLayout extends atoum
             )
             ->then
                 ->object($computed = $this->newTestedInstance->computeRectangleList($rectangleList, 600, 200, 10))
-                    ->isInstanceOf('\SplObjectStorage')
-                ->integer($computed[$rectangleList[0]]->getHeight())
-                    ->isEqualTo(163)
+                    ->isInstanceOf('\SplQueue')
+                ->integer(count($computed))
+                    ->isEqualTo(2)
+                ->integer($computed[0][0]['geometry']->getHeight())
+                    ->isEqualTo(198)
 
                 ->if(
-                        $totalWidth = $computed[$rectangleList[0]]->getWidth()
-                            + $computed[$rectangleList[1]]->getWidth()
-                            + $computed[$rectangleList[2]]->getWidth()
+                        $totalWidth = $computed[0][0]['geometry']->getWidth()
+                            + $computed[0][1]['geometry']->getWidth()
                 )
-                ->integer($totalWidth)
-                    ->isEqualTo(580)
+                ->float($totalWidth)
+                    ->isNearlyEqualTo(578.49557522124)
         ;
     }
 }
