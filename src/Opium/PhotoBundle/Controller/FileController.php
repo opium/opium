@@ -51,7 +51,7 @@ class FileController extends Controller
 
         $writePath = $this->getWritePath($photo, $cropWidth, $cropHeight);
         if (file_exists($writePath)) {
-            //return new BinaryFileResponse($writePath);
+            return new BinaryFileResponse($writePath);
         }
         $filepath = $this->container->getParameter('photos_directory') . $path;
         $imagick = new Imagick($filepath);
@@ -65,6 +65,9 @@ class FileController extends Controller
         $crop->setImage($imagick);
         $imagick = $crop->resizeAndCrop($cropWidth, $cropHeight);
         $imagick->setInterlaceScheme(Imagick::INTERLACE_PLANE);
+        if (!in_array($imagick->getImageFormat(), ['jpg', 'jpeg', 'png', 'gif'])) {
+            $imagick->setImageFormat('png');
+        }
         $imagick->writeImage($writePath);
 
         return new ImagickResponse($imagick, getimagesize($filepath)['mime']);
@@ -88,9 +91,14 @@ class FileController extends Controller
             mkdir($dir, 0777, true);
         }
 
+        $extension = $photo->getExtension();
+        if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+            $extension = 'png';
+        }
+
         return $dir .
             $width . 'x' . $height .
-            '.' . $photo->getExtension();
+            '.' . $extension;
     }
 
     /**
