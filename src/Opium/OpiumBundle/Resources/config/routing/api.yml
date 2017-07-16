@@ -7,17 +7,6 @@
 #        photo: "[^/]+"
 #        _method: GET
 
-opium_options:
-    methods: [OPTIONS]
-    path: /{anything}
-    defaults:
-        _controller: FrameworkBundle:Template:template
-        template: '::empty.html.twig'
-        maxAge: 86400
-        sharedMaxAge: 86400
-    requirements:
-        anything: ".*"
-
 api.directories:
     type: rest
     resource: "OpiumBundle:Directory"

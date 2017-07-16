@@ -13,7 +13,9 @@ security:
             security: false
 
         default:
-            pattern: ^/v[1-9][0-9]?/
+            # pattern: ^/v[1-9][0-9]?/
+            pattern: ^/
+            methods: [GET, POST, PUT, DELETE, PATCH]
             anonymous: true
             http_basic:
                 realm: "Opium secured area"

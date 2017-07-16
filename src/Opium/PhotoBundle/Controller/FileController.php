@@ -46,6 +46,8 @@ class FileController extends Controller
 
         if ($cropHeight === 'auto') {
             $cropHeight = (int) round($cropWidth * $photo->getHeight() / $photo->getWidth());
+        } elseif ($cropWidth === 'auto') {
+            $cropWidth = (int) round($cropHeight * $photo->getWidth() / $photo->getHeight());
         }
 
 
