@@ -77,14 +77,22 @@ class PopulateCommand extends ContainerAwareCommand
         }
         $em->flush();
 
-        $output->writeln('update cover');
+        $output->writeln('=== update cover ===');
 
         // update photo
         $dirList = $dirRepo->findAll();
         foreach ($dirList as $dir) {
             $photo = $photoRepo->findOneBy(['parent' => $dir, 'displayable' => true]);
             if ($photo) {
+                $output->writeln($dir->getSlug());
                 $dir->setDirectoryThumbnail($photo);
+
+                $parent = $dir->getParent();
+
+                while($parent) {
+                    $parent->setDirectoryThumbnail($photo);
+                    $parent = $parent->getParent();
+                }
             }
         }
 
