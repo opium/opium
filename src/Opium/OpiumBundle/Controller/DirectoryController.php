@@ -2,11 +2,12 @@
 
 namespace Opium\OpiumBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpFoundation\Request;
+use Opium\OpiumBundle\Entity\Directory;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\HttpFoundation\Request;
 
 class DirectoryController extends FOSRestController
 {
@@ -43,6 +44,42 @@ class DirectoryController extends FOSRestController
     {
         $dir = $this->get('opium.repository.directory')->findOneBySlug($path);
         return $dir;
+    }
+
+    /**
+     * postDirectoryAction
+     *
+     * @access public
+     * @return void
+     *
+     * @ApiDoc(description="Create a directory")
+     * @Rest\View(serializerEnableMaxDepthChecks=true)
+     */
+    public function postDirectoryAction(Request $request)
+    {
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $directoryRepository = $em->getRepository('OpiumBundle:Directory');
+        $post = $request->request->all();
+
+        $parentId = $post['parent']['id'] ?? null;
+        $parentSlug = $post['parent']['slug'] ?? null;
+        if ($parentId > 0) {
+            $parent = $directoryRepository->find((int) $parentId);
+        } elseif ($parentSlug) {
+            $parent = $directoryRepository->findOneBySlug($parentSlug);
+        } else {
+            $parent = $directoryRepository->findOneByParent(null);
+        }
+
+        $directory = new Directory();
+        $directory->setName($post['name']);
+        $directory->setParent($parent);
+
+        $em->persist($directory);
+        $em->flush();
+
+        return $directory;
     }
 
     /**

@@ -29,3 +29,6 @@ Opium\OpiumBundle\Entity\File:
         parent:
             targetEntity: Directory
             inversedBy: children
+
+    lifecycleCallbacks:
+        prePersist: [ prePersist ]

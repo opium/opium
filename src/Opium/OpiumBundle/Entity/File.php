@@ -256,6 +256,17 @@ abstract class File
         return $this->slug;
     }
 
+    public function prePersist()
+    {
+        if (!$this->pathname) {
+            $parentPathname = $this->getParent() ? $this->getParent()->getPathname() : '';
+            if ($parentPathname) {
+                $parentPathname .= '/';
+            }
+            $this->setPathname($parentPathname . $this->getName());
+        }
+    }
+
     /**
      * getType
      *

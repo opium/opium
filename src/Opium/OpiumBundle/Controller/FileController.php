@@ -2,8 +2,8 @@
 
 namespace Opium\OpiumBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -23,6 +23,10 @@ class FileController extends FOSRestController
     public function getFileAction($slug)
     {
         $file = $this->get('opium.repository.photo')->findOneBySlug($slug);
+        if (!$file) {
+            throw $this->createNotFoundException(sprintf('File with slug "%s" not found', $slug));
+        }
+
         $neighbour = $file->getParent()->getChildren();
         $index = $neighbour->indexOf($file);
 
