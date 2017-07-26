@@ -26,7 +26,7 @@ Debug::enable();
 
 require_once __DIR__.'/../app/AppKernel.php';
 
-ladybug_set_format('text');
+// ladybug_set_format('text');
 
 $kernel = new AppKernel('dev', true);
 $kernel->loadClassCache();

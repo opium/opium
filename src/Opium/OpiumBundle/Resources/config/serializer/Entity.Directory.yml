@@ -8,7 +8,7 @@ Opium\OpiumBundle\Entity\Directory:
         getDisplayableChildren:
             serialized_name: "children"
             type: array
-            max_depth: 1
+            max_depth: 2
 
     relations:
         -

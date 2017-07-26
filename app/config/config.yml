@@ -46,7 +46,7 @@ assetic:
 
 sensio_framework_extra:
     view:
-        annotations: false
+        annotations: true
 
 fos_rest:
     routing_loader:
