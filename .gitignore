@@ -1,0 +1,17 @@
+
+###> symfony/framework-bundle ###
+/.env
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> behat/symfony2-extension ###
+behat.yml
+###< behat/symfony2-extension ###
+
+#opium
+/photos/*
+!/photos/.gitkeep
+/.thumbs/*
+!/.thumbs/.gitkeep
