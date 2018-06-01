@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Component\Layout;
 
 use JsonSerializable;
 
 /**
  * Class Rectangle
+ *
  * @author Julien Deniau <julien.deniau@mapado.com>
  */
 class Rectangle implements RectangleInterface, JsonSerializable
@@ -14,7 +17,6 @@ class Rectangle implements RectangleInterface, JsonSerializable
      * width
      *
      * @var int
-     * @access private
      */
     private $width;
 
@@ -22,7 +24,6 @@ class Rectangle implements RectangleInterface, JsonSerializable
      * height
      *
      * @var int
-     * @access private
      */
     private $height;
 
@@ -52,6 +53,7 @@ class Rectangle implements RectangleInterface, JsonSerializable
      * Setter for width
      *
      * @param int $width
+     *
      * @return Rectangle
      */
     public function setWidth($width)
@@ -75,6 +77,7 @@ class Rectangle implements RectangleInterface, JsonSerializable
      * Setter for height
      *
      * @param int $height
+     *
      * @return Rectangle
      */
     public function setHeight($height)

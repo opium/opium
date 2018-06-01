@@ -15,3 +15,7 @@ behat.yml
 !/photos/.gitkeep
 /.thumbs/*
 !/.thumbs/.gitkeep
+
+###> friendsofphp/php-cs-fixer ###
+/.php_cs.cache
+###< friendsofphp/php-cs-fixer ###

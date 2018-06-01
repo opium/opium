@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Component\Layout\RectangleInterface;
@@ -7,7 +9,6 @@ use App\Component\Layout\RectangleInterface;
 /**
  * Photo
  *
- * @uses File
  * @author Julien Deniau <julien.deniau@mapado.com>
  */
 class Photo extends File implements RectangleInterface
@@ -16,7 +17,6 @@ class Photo extends File implements RectangleInterface
      * exif
      *
      * @var array
-     * @access private
      */
     private $exif;
 
@@ -24,7 +24,6 @@ class Photo extends File implements RectangleInterface
      * width
      *
      * @var int
-     * @access private
      */
     private $width;
 
@@ -32,7 +31,6 @@ class Photo extends File implements RectangleInterface
      * height
      *
      * @var int
-     * @access private
      */
     private $height;
 
@@ -40,7 +38,6 @@ class Photo extends File implements RectangleInterface
      * latitude
      *
      * @var float
-     * @access private
      */
     private $latitude;
 
@@ -48,15 +45,13 @@ class Photo extends File implements RectangleInterface
      * longitude
      *
      * @var float
-     * @access private
      */
     private $longitude;
 
     /**
      * displayable
      *
-     * @var boolean
-     * @access private
+     * @var bool
      */
     private $displayable = false;
 
@@ -81,7 +76,8 @@ class Photo extends File implements RectangleInterface
     /**
      * Setter for displayable
      *
-     * @param boolean $displayable
+     * @param bool $displayable
+     *
      * @return Photo
      */
     public function setDisplayable($displayable)
@@ -94,7 +90,6 @@ class Photo extends File implements RectangleInterface
     /**
      * getExtension
      *
-     * @access public
      * @return string
      */
     public function getExtension()
@@ -105,12 +100,11 @@ class Photo extends File implements RectangleInterface
     /**
      * getPosition
      *
-     * @access public
      * @return array
      */
     public function getPosition()
     {
-        if ($this->latitude !== null && $this->longitude !== null) {
+        if (null !== $this->latitude && null !== $this->longitude) {
             return [
                 'lat' => $this->latitude,
                 'lng' => $this->longitude,
@@ -134,6 +128,7 @@ class Photo extends File implements RectangleInterface
      * Setter for latitude
      *
      * @param float $latitude
+     *
      * @return Photo
      */
     public function setLatitude($latitude)
@@ -157,6 +152,7 @@ class Photo extends File implements RectangleInterface
      * Setter for longitude
      *
      * @param float $longitude
+     *
      * @return Photo
      */
     public function setLongitude($longitude)
@@ -169,7 +165,6 @@ class Photo extends File implements RectangleInterface
     /**
      * getExif
      *
-     * @access public
      * @return array
      */
     public function getExif()
@@ -181,12 +176,13 @@ class Photo extends File implements RectangleInterface
      * setExif
      *
      * @param float $exif
-     * @access public
+     *
      * @return Photo
      */
     public function setExif($exif)
     {
         $this->exif = $exif;
+
         return $this;
     }
 
@@ -204,6 +200,7 @@ class Photo extends File implements RectangleInterface
      * Setter for width
      *
      * @param int $width
+     *
      * @return Photo
      */
     public function setWidth($width)
@@ -227,6 +224,7 @@ class Photo extends File implements RectangleInterface
      * Setter for height
      *
      * @param int $height
+     *
      * @return Photo
      */
     public function setHeight($height)
@@ -239,14 +237,13 @@ class Photo extends File implements RectangleInterface
     /**
      * positionFromExif
      *
-     * @access private
      * @return array
      */
     private function positionFromExif($exif)
     {
         if (empty($exif['GPSLatitude']) || empty($exif['GPSLatitudeRef'])
             || empty($exif['GPSLongitude']) || empty($exif['GPSLongitudeRef'])) {
-                return;
+            return;
         }
 
         $lat = explode(',', $exif['GPSLatitude']);
@@ -267,13 +264,14 @@ class Photo extends File implements RectangleInterface
      * @param mixed $min
      * @param mixed $sec
      * @param mixed $hem
-     * @access private
-     * @return double
+     *
+     * @return float
      */
     private function toDecimal($deg, $min, $sec, $hem)
     {
         $d = $this->getValue($deg) + $this->getValue($min, 60) + $this->getValue($sec, 36000000);
-        return ($hem=='S' || $hem=='W') ? $d *= -1 : $d;
+
+        return ('S' == $hem || 'W' == $hem) ? $d *= -1 : $d;
     }
 
     /**
@@ -281,13 +279,13 @@ class Photo extends File implements RectangleInterface
      *
      * @param mixed $deg
      * @param int $multiplier
-     * @access private
-     * @return double
+     *
+     * @return float
      */
     private function getValue($deg, $multiplier = 1)
     {
-        if (strpos($deg, '/') !== false) {
-            list($a, $b) = explode('/', $deg);
+        if (false !== strpos($deg, '/')) {
+            [$a, $b] = explode('/', $deg);
             $deg = $a / $b;
         }
 

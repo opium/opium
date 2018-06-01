@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -7,7 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Directory
  *
- * @uses File
  * @author Julien Deniau <julien.deniau@mapado.com>
  */
 class Directory extends File
@@ -16,7 +17,6 @@ class Directory extends File
      * children
      *
      * @var mixed
-     * @access private
      */
     private $children;
 
@@ -24,14 +24,11 @@ class Directory extends File
      * directoryThumbnail
      *
      * @var Photo
-     * @access private
      */
     private $directoryThumbnail;
 
     /**
      * __construct
-     *
-     * @access public
      */
     public function __construct()
     {
@@ -58,6 +55,7 @@ class Directory extends File
     public function setDirectoryThumbnail(Photo $directoryThumbnail)
     {
         $this->directoryThumbnail = $directoryThumbnail;
+
         return $this;
     }
 
@@ -72,7 +70,6 @@ class Directory extends File
     /**
      * getChildren
      *
-     * @access public
      * @return \Iterator
      */
     public function getChildren()
@@ -83,6 +80,7 @@ class Directory extends File
     public function setChildren($children)
     {
         $this->children = $children;
+
         return $this;
     }
 

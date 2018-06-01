@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Api\Normalizer;
 
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -7,7 +9,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class UserNormalizer implements NormalizerInterface
 {
-    public function  normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = [])
     {
         return [
             'type' => 'user',

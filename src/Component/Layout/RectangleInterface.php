@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Component\Layout;
 
 /**
  * Interface RectangleInterface
+ *
  * @author Julien Deniau <julien.deniau@mapado.com>
  */
 interface RectangleInterface
@@ -11,7 +14,6 @@ interface RectangleInterface
     /**
      * getWidth
      *
-     * @access public
      * @return int
      */
     public function getWidth();
@@ -19,7 +21,6 @@ interface RectangleInterface
     /**
      * getHeight
      *
-     * @access public
      * @return int
      */
     public function getHeight();

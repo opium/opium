@@ -1,28 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 /**
  * File
  *
  * @abstract
+ *
  * @author Julien Deniau <julien.deniau@mapado.com>
  */
 abstract class File
 {
     /**
-     * id
-     *
-     * @var string
-     * @access private
-     */
-    private $id;
-
-    /**
      * name
      *
      * @var string
-     * @access protected
      */
     protected $name;
 
@@ -30,7 +24,6 @@ abstract class File
      * pathname
      *
      * @var string
-     * @access protected
      */
     protected $pathname;
 
@@ -38,15 +31,19 @@ abstract class File
      * thumbnails
      *
      * @var array
-     * @access protected
      */
     protected $thumbnails;
+    /**
+     * id
+     *
+     * @var string
+     */
+    private $id;
 
     /**
      * parent
      *
      * @var Directory
-     * @access private
      */
     private $parent;
 
@@ -54,7 +51,6 @@ abstract class File
      * previous
      *
      * @var File
-     * @access private
      */
     private $previous;
 
@@ -62,7 +58,6 @@ abstract class File
      * next
      *
      * @var File
-     * @access private
      */
     private $next;
 
@@ -70,14 +65,12 @@ abstract class File
      * slug
      *
      * @var string
-     * @access private
      */
     private $slug;
 
     /**
      * getId
      *
-     * @access public
      * @return string
      */
     public function getId()
@@ -89,12 +82,13 @@ abstract class File
      * setId
      *
      * @param mixed $id
-     * @access private
+     *
      * @return File
      */
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -118,6 +112,7 @@ abstract class File
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -141,6 +136,7 @@ abstract class File
     public function setPathname($pathname)
     {
         $this->pathname = $pathname;
+
         return $this;
     }
 
@@ -164,13 +160,13 @@ abstract class File
     public function setThumbnails(array $thumbnails)
     {
         $this->thumbnails = $thumbnails;
+
         return $this;
     }
 
     /**
      * getParent
      *
-     * @access public
      * @return Directory
      */
     public function getParent()
@@ -181,13 +177,13 @@ abstract class File
     public function setParent(File $parent = null)
     {
         $this->parent = $parent;
+
         return $this;
     }
 
     /**
      * getPrevious
      *
-     * @access public
      * @return File
      */
     public function getPrevious()
@@ -199,19 +195,19 @@ abstract class File
      * setPrevious
      *
      * @param File $previous
-     * @access public
+     *
      * @return File
      */
     public function setPrevious(File $previous = null)
     {
         $this->previous = $previous;
+
         return $this;
     }
 
     /**
      * getNext
      *
-     * @access public
      * @return File
      */
     public function getNext()
@@ -223,12 +219,13 @@ abstract class File
      * setNext
      *
      * @param File $next
-     * @access public
+     *
      * @return File
      */
     public function setNext(File $next = null)
     {
         $this->next = $next;
+
         return $this;
     }
 
@@ -236,19 +233,19 @@ abstract class File
      * setSlug
      *
      * @param string $slug
-     * @access public
+     *
      * @return File
      */
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
         return $this;
     }
 
     /**
      * getSlug
      *
-     * @access public
      * @return string
      */
     public function getSlug()
@@ -271,7 +268,7 @@ abstract class File
      * getType
      *
      * @abstract
-     * @access public
+     *
      * @return string
      */
     abstract public function getType();

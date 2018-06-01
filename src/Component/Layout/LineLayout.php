@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Component\Layout;
 
-use App\Component\Layout\RectangleInterface;
-use SplObjectStorage;
 use SplQueue;
 use Traversable;
 
 /**
  * Class LineLayout
+ *
  * @author Julien Deniau <julien.deniau@mapado.com>
  */
 class LineLayout
@@ -19,7 +20,7 @@ class LineLayout
      * @param Traversable $rectangleList
      * @param int $maxWidth
      * @param int $gutterWidth
-     * @access public
+     *
      * @return int
      */
     public function computeHeight(Traversable $rectangleList, $maxWidth, $gutterWidth = 0)
@@ -28,9 +29,9 @@ class LineLayout
             $rectangleList,
             function ($carry, $item) {
                 if ($item instanceof RectangleInterface && $item->getHeight()) {
-                    $carry += $item->getWidth()  / $item->getHeight();
+                    $carry += $item->getWidth() / $item->getHeight();
                 } else {
-                    $carry += 1;
+                    ++$carry;
                 }
 
                 return $carry;
@@ -52,7 +53,7 @@ class LineLayout
      * @param int $maxWidth
      * @param int $maxHeight
      * @param int $gutterWidth
-     * @access public
+     *
      * @return SplQueue<SplQueue<Rectangle>>
      */
     public function computeRectangleList(Traversable $rectangleList, $maxWidth, $maxHeight, $gutterWidth = 0)
@@ -68,7 +69,6 @@ class LineLayout
                 $storage = $this->computeLine($storage, $line, $height);
 
                 $line = new SplQueue();
-
             }
         }
 
@@ -85,7 +85,7 @@ class LineLayout
      * @param SplQueue $storage
      * @param SplQueue $line
      * @param int $height
-     * @access private
+     *
      * @return SplQueue
      */
     private function computeLine(SplQueue $storage, SplQueue $line, $height)
@@ -110,14 +110,13 @@ class LineLayout
      *
      * @param Traversable $iterator
      * @param callable $callback
-     * @access private
+     *
      * @return mixed
      */
     private function reduceIterator(Traversable $iterator, callable $callback)
     {
         $carry = 0;
-        foreach ($iterator as $item)
-        {
+        foreach ($iterator as $item) {
             $carry = $callback($carry, $item);
         }
 

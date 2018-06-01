@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Entity\Directory;
 use App\Entity\File;
 use App\Entity\Photo;
-Use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -64,7 +65,6 @@ class PopulateCommand extends ContainerAwareCommand
                 if ($file instanceof Directory && $file->getDirectoryThumbnail()) {
                     $entity->setDirectoryThumbnail($file->getDirectoryThumbnail());
                 }
-
             } else {
                 $entity = $file;
                 $this->entityManager->persist($entity);
@@ -98,7 +98,7 @@ class PopulateCommand extends ContainerAwareCommand
 
                 $parent = $dir->getParent();
 
-                while($parent) {
+                while ($parent) {
                     $parent->setDirectoryThumbnail($photo);
                     $parent = $parent->getParent();
                 }
@@ -106,14 +106,33 @@ class PopulateCommand extends ContainerAwareCommand
         }
 
         $this->entityManager->flush();
+    }
 
+    /**
+     * truncateTables
+     *
+     * @param bool $tableNames
+     * @param bool $cascade
+     */
+    private function truncateTables($tableNames = [], $cascade = false)
+    {
+        $connection = $this->entityManager->getConnection();
+        $platform = $connection->getDatabasePlatform();
+        $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0;');
+        if (is_string($tableNames)) {
+            $tableNames = [$tableNames];
+        }
+        foreach ($tableNames as $name) {
+            $connection->executeUpdate($platform->getTruncateTableSQL($name, $cascade));
+        }
+        $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 1;');
     }
 
     /**
      * getParentPath
      *
      * @param File $file
-     * @access private
+     *
      * @return string parent path
      */
     private function getParentPath(File $file)
@@ -126,27 +145,5 @@ class PopulateCommand extends ContainerAwareCommand
         $parentPath = substr($path, 0, strrpos($path, '/', -2));
 
         return $parentPath;
-    }
-
-    /**
-     * truncateTables
-     *
-     * @param bool $tableNames
-     * @param bool $cascade
-     * @access public
-     * @return void
-     */
-    public function truncateTables($tableNames = array(), $cascade = false)
-    {
-        $connection = $this->entityManager->getConnection();
-        $platform = $connection->getDatabasePlatform();
-        $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0;');
-        if (is_string($tableNames)) {
-            $tableNames = [$tableNames];
-        }
-        foreach ($tableNames as $name) {
-            $connection->executeUpdate($platform->getTruncateTableSQL($name, $cascade));
-        }
-        $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 1;');
     }
 }
