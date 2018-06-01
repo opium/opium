@@ -1,4 +1,7 @@
 {
+    "atoum/atoum": {
+        "version": "3.3.0"
+    },
     "behat/behat": {
         "version": "v3.4.3"
     },

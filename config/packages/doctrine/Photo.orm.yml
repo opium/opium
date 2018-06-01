@@ -1,0 +1,29 @@
+App\Entity\Photo:
+    type: entity
+    extends: File
+
+    fields:
+        displayable:
+            type: boolean
+            nullable: false
+
+        exif:
+            type: json_array
+            nullable: true
+
+        latitude:
+            type: float
+            nullable: true
+
+        longitude:
+            type: float
+            nullable: true
+
+        width:
+            type: integer
+            nullable: false
+
+        height:
+            type: integer
+            nullable: false
+

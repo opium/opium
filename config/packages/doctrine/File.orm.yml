@@ -1,0 +1,34 @@
+App\Entity\File:
+    type: entity
+    table: file
+    inheritanceType: SINGLE_TABLE
+
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+
+    fields:
+        pathname:
+            type: string
+            length: 255
+
+        name:
+            type: string
+            length: 100
+
+        slug:
+            type: string
+            length: 255
+            gedmo:
+                slug:
+                    fields:
+                        - name
+
+    manyToOne:
+        parent:
+            targetEntity: Directory
+            inversedBy: children
+
+    lifecycleCallbacks:
+        prePersist: [ prePersist ]

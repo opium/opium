@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use Opium\Component\Layout\RectangleInterface;
+use App\Component\Layout\RectangleInterface;
 
 /**
  * Photo

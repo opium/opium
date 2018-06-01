@@ -1,0 +1,12 @@
+* OpiumBundle
+  * Controller
+    * Directory
+    * File
+  * Finder
+  * Resource/config
+  * Serializer
+  * Transformer
+* PhotoBundle
+  * Resources/config/image.yml
+  * Http/ImagickResponse.php
+  * Controller/FileController.php
