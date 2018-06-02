@@ -7,21 +7,25 @@ namespace App\Command;
 use App\Entity\Directory;
 use App\Entity\File;
 use App\Entity\Photo;
+use App\Finder\PhotoFinder;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PopulateCommand extends ContainerAwareCommand
+class PopulateCommand extends Command
 {
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    private $photoFinder;
+
+    public function __construct(EntityManagerInterface $entityManager, PhotoFinder $photoFinder)
     {
         parent::__construct();
 
         $this->entityManager = $entityManager;
+        $this->photoFinder = $photoFinder;
     }
 
     /**
@@ -57,7 +61,7 @@ class PopulateCommand extends ContainerAwareCommand
             $this->entityManager->persist($root);
         }
 
-        $fileList = $this->getContainer()->get('opium.finder.photo')->find($output);
+        $fileList = $this->photoFinder->find($output);
 
         foreach ($fileList as $file) {
             $entity = $fileRepo->findOneByPathname($file->getPathname());
