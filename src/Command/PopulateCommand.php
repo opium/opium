@@ -114,9 +114,6 @@ class PopulateCommand extends Command
 
     /**
      * truncateTables
-     *
-     * @param bool $tableNames
-     * @param bool $cascade
      */
     private function truncateTables($tableNames = [], $cascade = false)
     {
@@ -139,15 +136,19 @@ class PopulateCommand extends Command
      *
      * @return string parent path
      */
-    private function getParentPath(File $file)
+    private function getParentPath(File $file): string
     {
         $path = $file->getPathname();
         if (strlen($path) < 2) {
             return '';
         }
 
-        $parentPath = substr($path, 0, strrpos($path, '/', -2));
+        $lastSlashPos = strrpos($path, '/', -2);
 
-        return $parentPath;
+        if (false === $lastSlashPos) {
+            return '';
+        }
+
+        return substr($path, 0, $lastSlashPos);
     }
 }
