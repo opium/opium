@@ -7,6 +7,9 @@ default:
                 - behatch:context:rest
                 - FeatureContext:
                     populateCommand: '@opium.command.populate'
+                    doPopulate: false # change to true when wanted
+                - FileContext:
+                    entityManager: '@doctrine.orm.default_entity_manager'
 
     extensions:
         Behat\MinkExtension:

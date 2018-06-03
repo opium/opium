@@ -25,9 +25,12 @@ class FeatureContext implements Context
 
     private $populateCommand;
 
-    public function __construct(PopulateCommand $populateCommand)
+    private $doPopulate;
+
+    public function __construct(PopulateCommand $populateCommand, bool $doPopulate)
     {
         $this->populateCommand = $populateCommand;
+        $this->doPopulate = $doPopulate;
     }
 
     /**
@@ -58,10 +61,14 @@ class FeatureContext implements Context
     }
 
     /**
-     * @BeforeScenario @recreateSchema
+     * @Given I populate the files
      */
-    public function recreateSchema(BeforeScenarioScope $scope)
+    public function iPopulateTheFiles(): void
     {
+        if (!$this->doPopulate) {
+            return;
+        }
+
         $application = new Application('Populator', '1.0.0');
         $command = $this->populateCommand;
         $application->add($command);
