@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Command\PopulateCommand;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Environment\InitializedContextEnvironment;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behatch\Context\RestContext;
 use Behatch\HttpCall\Request;
+use Symfony\Component\Console\Application;
 
 /**
  * This context class contains the definitions of the steps used by the demo
@@ -19,6 +23,13 @@ class FeatureContext implements Context
      */
     private $restContext;
 
+    private $populateCommand;
+
+    public function __construct(PopulateCommand $populateCommand)
+    {
+        $this->populateCommand = $populateCommand;
+    }
+
     /**
      * @Given I am authenticated with user :username
      */
@@ -29,7 +40,6 @@ class FeatureContext implements Context
             sprintf('Basic %s', base64_encode($username . ':' . $username))
         );
     }
-
 
     /**
      * gatherContexts
@@ -46,5 +56,18 @@ class FeatureContext implements Context
         }
         $this->restContext = $environment->getContext(RestContext::class);
     }
-}
 
+    /**
+     * @BeforeScenario @recreateSchema
+     */
+    public function recreateSchema(BeforeScenarioScope $scope)
+    {
+        $application = new Application('Populator', '1.0.0');
+        $command = $this->populateCommand;
+        $application->add($command);
+        $application->setAutoExit(false);
+
+        $application->setDefaultCommand($command->getName(), true);
+        $application->run();
+    }
+}

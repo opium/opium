@@ -39,3 +39,8 @@ services:
     App\Finder\PhotoFinder:
         arguments:
             $photoDir: '%env(resolve:PHOTOS_DIRECTORY)%'
+
+    # Alias public services
+    opium.command.populate:
+        alias: 'App\Command\PopulateCommand'
+        public: true

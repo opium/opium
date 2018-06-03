@@ -5,7 +5,8 @@ default:
                 - 'Behat\MinkExtension\Context\MinkContext'
                 - behatch:context:json
                 - behatch:context:rest
-                - FeatureContext
+                - FeatureContext:
+                    populateCommand: '@opium.command.populate'
 
     extensions:
         Behat\MinkExtension:
