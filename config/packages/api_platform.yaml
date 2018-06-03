@@ -1,0 +1,9 @@
+api_platform:
+    title: 'Opium'
+    description: 'Open-source Photo Gallery'
+    version: '1'
+    mapping:
+        paths: ['%kernel.project_dir%/config/api']
+
+    eager_loading:
+        enabled: false

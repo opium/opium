@@ -7,9 +7,11 @@ Feature: Manage files
 
   Scenario:
     Given I am authenticated with user test
-    When I send a GET request to "/v1/directories"
+    And I add accept header equal to "application/ld+json"
+    When I send a GET request to "/v1/directories/1"
     Then the response status code should be 200
-    Then print last JSON response
     And the response should be in JSON
-    And the JSON should be valid according to the schema "features/schema/directories.json"
+    And the JSON response should match file "features/snapshots/directory.1.json"
+
+    # And the JSON should be valid according to the schema "features/schema/directories.json"
 

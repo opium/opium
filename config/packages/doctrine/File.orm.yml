@@ -2,6 +2,12 @@ App\Entity\File:
     type: entity
     table: file
     inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: dtype
+        type: string
+    discriminatorMap:
+        directory: App\Entity\Directory
+        photo: App\Entity\Photo
 
     id:
         id:

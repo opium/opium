@@ -1,0 +1,70 @@
+{
+  "@context": "/v1/contexts/Directory",
+  "@id": "/v1/directories/1",
+  "@type": "Directory",
+  "name": "",
+  "pathname": "",
+  "type": "directory",
+  "displayableChildren": [
+    {
+      "@id": "/v1/directories/2",
+      "@type": "Directory",
+      "name": "Alps",
+      "pathname": "Alps",
+      "type": "directory",
+      "parent": "/v1/directories/1",
+      "previous": null,
+      "next": null,
+      "slug": "alps"
+    },
+    {
+      "@id": "/v1/directories/3",
+      "@type": "Directory",
+      "name": "Asia",
+      "pathname": "Asia",
+      "type": "directory",
+      "parent": "/v1/directories/1",
+      "previous": null,
+      "next": null,
+      "slug": "asia"
+    },
+    {
+      "@id": "/v1/directories/5",
+      "@type": "Directory",
+      "name": "Pacific Ocean",
+      "pathname": "Pacific Ocean",
+      "type": "directory",
+      "parent": "/v1/directories/1",
+      "previous": null,
+      "next": null,
+      "slug": "pacific-ocean"
+    },
+    {
+      "@id": "/v1/directories/6",
+      "@type": "Directory",
+      "name": "USA",
+      "pathname": "USA",
+      "type": "directory",
+      "parent": "/v1/directories/1",
+      "previous": null,
+      "next": null,
+      "slug": "usa"
+    },
+    {
+      "@id": "/v1/directories/9",
+      "@type": "Directory",
+      "name": "Venezia",
+      "pathname": "Venezia",
+      "type": "directory",
+      "parent": "/v1/directories/1",
+      "previous": null,
+      "next": null,
+      "slug": "venezia"
+    }
+  ],
+  "parent": null,
+  "previous": null,
+  "next": null,
+  "slug": ""
+}
+

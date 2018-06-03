@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * Directory
@@ -61,6 +63,8 @@ class Directory extends File
 
     /**
      * {@inheritdoc}
+     *
+     * @Groups({"directory_read"})
      */
     public function getType()
     {
@@ -84,6 +88,11 @@ class Directory extends File
         return $this;
     }
 
+    /**
+     * @Groups({"directory_read"})
+     * @MaxDepth(1)
+     * TODO MaxDepth(2) in the old version
+     */
     public function getDisplayableChildren()
     {
         $out = [];

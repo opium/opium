@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
+
 /**
  * File
  *
@@ -17,6 +20,7 @@ abstract class File
      * name
      *
      * @var string
+     * @Groups({"directory_read"})
      */
     protected $name;
 
@@ -24,6 +28,7 @@ abstract class File
      * pathname
      *
      * @var string
+     * @Groups({"directory_read"})
      */
     protected $pathname;
 
@@ -33,6 +38,7 @@ abstract class File
      * @var array
      */
     protected $thumbnails;
+
     /**
      * id
      *
@@ -44,6 +50,8 @@ abstract class File
      * parent
      *
      * @var Directory
+     * @Groups({"directory_read"})
+     * @MaxDepth(1)
      */
     private $parent;
 
@@ -51,6 +59,8 @@ abstract class File
      * previous
      *
      * @var File
+     * @Groups({"directory_read"})
+     * @MaxDepth(1)
      */
     private $previous;
 
@@ -58,6 +68,8 @@ abstract class File
      * next
      *
      * @var File
+     * @Groups({"directory_read"})
+     * @MaxDepth(1)
      */
     private $next;
 
@@ -65,6 +77,7 @@ abstract class File
      * slug
      *
      * @var string
+     * @Groups({"directory_read"})
      */
     private $slug;
 

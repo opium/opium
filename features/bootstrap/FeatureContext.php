@@ -6,6 +6,7 @@ use App\Command\PopulateCommand;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Environment\InitializedContextEnvironment;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\PyStringNode;
 use Behatch\Context\RestContext;
 use Behatch\HttpCall\Request;
 use Symfony\Component\Console\Application;
@@ -76,5 +77,15 @@ class FeatureContext implements Context
 
         $application->setDefaultCommand($command->getName(), true);
         $application->run();
+    }
+
+    /**
+     * @Then the JSON response should match file :path
+     */
+    public function theJsonResponseShouldMatchFile($path)
+    {
+        $expected = json_encode(json_decode(file_get_contents($path)));
+
+        $this->restContext->theResponseShouldBeEqualTo(new PyStringNode([$expected], 1));
     }
 }

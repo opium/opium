@@ -1,0 +1,18 @@
+resources:
+    App\Entity\Directory:
+        collectionOperations: []
+            #- 'get'
+        itemOperations:
+            - 'get'
+        attributes:
+            normalization_context:
+                groups: ['directory_read']
+                enable_max_depth: true
+    App\Entity\Photo:
+        collectionOperations: []
+        itemOperations:
+            - 'get'
+        attributes:
+            normalization_context:
+                groups: ['photo_read']
+                enable_max_depth: true
